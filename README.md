@@ -1,4 +1,4 @@
-# **LizBot**
+# **Liz**
 ![Liz](Liz.png)
 ### Traits AI's internal persona comes to life as an Alexa skill!
 
