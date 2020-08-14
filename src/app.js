@@ -123,24 +123,24 @@ app.setHandler({
 		
 	},
 	
-	introPart2NameState: {
+	//introPart2NameState: {
 		
 		YesIntent() {
 			let speech = 'reached';		//using for testing
 			let reprompt = 'reached';
-			this.followUpState('introPart2NameState').ask(speech, reprompt);
+			//this.followUpState('introPart2NameState').ask(speech, reprompt);
 			
 		},
 		
 		GetNameIntent() {
 			let speech = 'Your name is ' + name;		//some issue here, in the debugger it is pulling the name correctly, but here it is assigning speech to null?
 			let reprompt = 'I didn\'t get your name!?';
-			this.followUpState('introPart2NameState').ask(speech, reprompt);
+			//this.followUpState('introPart2NameState').ask(speech, reprompt);
 
 
 		},
 		
-	},
+	//},
 	
 	MainMenuState: {
 		MainMenuIntent() {
