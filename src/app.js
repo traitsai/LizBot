@@ -133,7 +133,7 @@ app.setHandler({
 		},
 		
 		GetNameIntent() {
-			let speech = 'Your name is ' + name;		//some issue here, in the debugger it is pulling the name correctly, but here it is assigning speech to null?
+			let speech = 'Your name is ' + this.$inputs.name.value;		//some issue here, in the debugger it is pulling the name correctly, but here it is assigning speech to null?
 			let reprompt = 'I didn\'t get your name!?';
 			//this.followUpState('introPart2NameState').ask(speech, reprompt);
 
