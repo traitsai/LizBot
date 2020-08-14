@@ -75,8 +75,7 @@ app.setHandler({
 		NoIntent() {					//maybe reduce this copy?
 			let speech = 'Oh, you don\'t have a favorite digital assistant? Well maybe I can be your favorite! I\'ll work hard to try to impress you. I love learning more about interesting people.. And people can be so fascinating to chat with! You have known my name. What\'s your name then?';
 			let reprompt = 'Can I try to impress you?';
-			this.ask(speech,reprompt);
-			//this.followUpState('introPart2NameState').ask(speech, reprompt);	//this is the one connected to next state, others are not at this point.
+			this.followUpState('introPart2NameState').ask(speech, reprompt);	//this is the one connected to next state, others are not at this point.
 			
 		}, 
 		
@@ -124,26 +123,26 @@ app.setHandler({
 		
 	},
 	
-	//introPart2NameState: {
+	introPart2NameState: {
 		
 		YesIntent() {
 			let speech = 'reached';		//using for testing
 			let reprompt = 'reached';
-			this.ask(speech,reprompt);
-			//this.followUpState('introPart2NameState').ask(speech, reprompt);
+			
+			this.followUpState('introPart2NameState').ask(speech, reprompt);
 			
 		},
 		
 		GetNameIntent() {
 			let speech = 'Your name is ' + this.$inputs.name.value;		//some issue here, in the debugger it is pulling the name correctly, but here it is assigning speech to null?
 			let reprompt = 'I didn\'t get your name!?';
-			this.ask(speech, reprompt);
-			//this.followUpState('introPart2NameState').ask(speech, reprompt);
+			
+			this.followUpState('introPart2NameState').ask(speech, reprompt);
 
 
 		},
 		
-	//},
+	},
 	
 	MainMenuState: {
 		MainMenuIntent() {
