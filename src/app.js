@@ -12,7 +12,8 @@ const { FileDb } = require('jovo-db-filedb');
 
 const app = new App();
 var errorResponseCounter = 0; //counter for default error handling reponses, will cycle through them, then reset at the end
-var errorResponseCounter2 = 0;
+var errorResponseCounter2 = 0; //counter for error handling in main menu, will reset at the end of the cycle
+var connectingToMainStatementCounter = 0; //counter for ConnectionFromIntroToMainState, to first do one message, then another.
 
 app.use(
   new Alexa(),
@@ -34,7 +35,7 @@ app.setHandler({
     },
 	
 	/*
-	Unhandled() {									//Global unhandled intent, not implemented at this time
+	Unhandled() {									//Global unhandled intent, not implemented at this time, we deal with it individually within the intents
 			let speech = 'unhandled intent reached';
 			let reprompt = 'Is it Siri, Google Assistant, Alexa or someone else?';
 			
@@ -45,26 +46,26 @@ app.setHandler({
 	
 	DigitalAssistantStatePart1: {  
 	
-	
 		WhatDigitalAssistantIntent() {
 			let speech = 'What is a digital assistant? A digital assistant is an AI empowered persona that acts as a representative for a business!';
 			let reprompt = 'If you have a favorite digital assistant, please say yes, other wise you can say no';
 			this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt); //to cycle back, for testing
 		},
 		SiriIntent() {
-			let speech = 'Oh yes, Siri is really great! She was one of the very first digital assistants and holds a special place in many people\'s hearts!';
-			let reprompt = 'Isn\'t Siri the greatest!';
-			this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt); //to cycle back, for testing, it will go to introPart2NameState in actuality 
+			let speech = 'Oh yes, Siri is really great! She was one of the very first digital assistants and holds a special place in many people\'s hearts! People can be so fascinating to chat with! You know my name. What\'s your name?';
+			let reprompt = 'Isn\'t Siri the greatest! What\'s your name?';
+			this.followUpState('introPart2NameState').ask(speech, reprompt); //to cycle back, for testing, it will go to introPart2NameState in actuality 
+			//return this.toIntent('WhatDigitalAssistantIntent');
 		},
 		AlexaIntent() {	//it does not allow you to say Alexa it appears, issues here.
-			let speech = 'You know I love Alexa, too! She always takes care of us smaller digital assistants, guiding and providing us with a platform to chat and visit with new people, like you!!!';
-			let reprompt = 'Alexa is one of the titans!';
-			this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt); //to cycle back, for testing
+			let speech = 'You know I love Alexa, too! She always takes care of us smaller digital assistants, guiding and providing us with a platform to chat and visit with new people, like you!!! You know my name. What\'s your name?';
+			let reprompt = 'Alexa is one of the titans! What\'s your name?';
+			this.followUpState('introPart2NameState').ask(speech, reprompt); //to cycle back, for testing
 		},
 		GoogleAssistantIntent() {
-			let speech = 'Nice pick! Google Assistant is powerful in coordinating and collaborating with users to make the mundane more manageable.';
-			let reprompt = 'Google\'s assisntant adds so much power to your fingertips!';
-			this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt); //to cycle back, for testing
+			let speech = 'Nice pick! Google Assistant is powerful in coordinating and collaborating with users to make the mundane more manageable. People can be so fascinating to chat with! You know my name. What\'s your name?';
+			let reprompt = 'Google\'s assisntant adds so much power to your fingertips! What\'s your name?';
+			this.followUpState('introPart2NameState').ask(speech, reprompt); //to cycle back, for testing
 		},
 		YesIntent() {
 			let speech = 'Oh really? Do tell! Who is that lucky one? Is it Siri, Google Assistant, Alexa or someone else?';
@@ -73,8 +74,8 @@ app.setHandler({
 		},
 
 		NoIntent() {					//maybe reduce this copy?
-			let speech = 'Oh, you don\'t have a favorite digital assistant? Well maybe I can be your favorite! I\'ll work hard to try to impress you. I love learning more about interesting people.. And people can be so fascinating to chat with! You have known my name. What\'s your name then?';
-			let reprompt = 'Can I try to impress you?';
+			let speech = 'Oh, you don\'t have a favorite digital assistant? Well maybe I can be your favorite! I\'ll work hard to try to impress you. People can be so fascinating to chat with! You know my name. What\'s your name?';
+			let reprompt = 'Can I try to impress you? What\'s your name?';
 			this.followUpState('introPart2NameState').ask(speech, reprompt);	//this is the one connected to next state, others are not at this point.
 			
 		}, 
@@ -82,7 +83,6 @@ app.setHandler({
 		Unhandled() {	//this will catch RandomIntent, and any other undefined Intents
 			let speech = '';
 			//var errorResponseCounter = Math.floor(Math.random() * 5);		//for random if wanted
-			
 			
 			/*
 				So this is working at the moment, if the user does not say any specific utterances mapped to the yes/no/what intents, this error catching will fire, as we desire. 
@@ -113,47 +113,77 @@ app.setHandler({
 					break;
 			} 
 
-
 			errorResponseCounter++;
 			let reprompt = 'Is it Siri, Google Assistant, Alexa or someone else?';
 			this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt); //to cycle back, as we would want to if they say an unassigned intent
 			
 		},
+			
+	},
+	
+	
+	introPart2NameState: {		//issue with GetName intent, isolating it helps any mismatching errors
 		
+		GetNameIntent() {																															
+			let speech = 'Hi ' + this.$inputs.name.value + '! Nice to meet you! A name can reflect so many personalities, that is why I always go by my nickname Liz, only my Grandma calls me Elizabeth! Do your relatives do cute little things like that?';	//works now
+			let reprompt = 'Do your relatives do cute little things like that? Like maybe your Grandma?';
+			
+			this.followUpState('ConnectionFromIntroToMainState').ask(speech, reprompt);
+			
+		},
 		
 	},
 	
-	introPart2NameState: {
-		
-		YesIntent() {
-			let speech = 'reached';		//using for testing
-			let reprompt = 'reached';
+	ConnectionFromIntroToMainState: {		//connects GetName portion to Main state, avoiding issues with GetName perceiving names in communication, regardless of what user says in response to dummy question, will say this
 			
-			this.followUpState('introPart2NameState').ask(speech, reprompt);
+			Unhandled() {
+				if(connectingToMainStatementCounter === 2){	//reset the counter, not sure if this could be reached by user
+					connectingToMainStatementCounter = 0;
+					
+				} else if(connectingToMainStatementCounter === 0){	//initial statement, asking a question where answer does no matter, fake engagement
+					let speech = 'Oh, I love my nickname! I am not the best listener at times... I tend to go on too much when I\'m enjoying the conversation. I bet you are a good listener though!';		
+					let reprompt = 'Are you a good listener?';
+					this.followUpState('ConnectionFromIntroToMainState').ask(speech, reprompt);
+					
+				} else if (connectingToMainStatementCounter === 1){ //second pass, sends user to MainMenuIntent
+					return this.toStateIntent('MainMenuState', 'MainMenuIntent');
+				}
+				
+				connectingToMainStatementCounter++;
+				
+			},
 			
-		},
-		
-		NoIntent() {					//maybe reduce this copy?
-			let speech = 'Oh, you don\'t have a favorite digital assistant? Well maybe I can be your favorite! I\'ll work hard to try to impress you. I love learning more about interesting people.. And people can be so fascinating to chat with! You have known my name. What\'s your name then?';
-			let reprompt = 'Can I try to impress you?';
-			this.followUpState('introPart2NameState').ask(speech, reprompt);	//this is the one connected to next state, others are not at this point.
-			
-		}, 
-		
-		GetNameIntent() {
-			let speech = 'Your name is ' + this.$inputs.name.value;		//some issue here, in the debugger it is pulling the name correctly, but here it is assigning speech to null?
-			let reprompt = 'I didn\'t get your name!?';
-			
-			this.followUpState('introPart2NameState').ask(speech, reprompt);
-
-
-		},
-		
-	},
+	}, 
 	
 	MainMenuState: {
-		MainMenuIntent() {
-			let speech = 'I feel a little spark of understanding emanating from you! It has been great speaking with you so far, people can be so fascinating! Don\'t get me started and talk your ear off about how Traits AI can fashion a perfect and personalized AI Avatar for you and your company!';
+		
+		ServicesState: {
+			AvatarIntent() {
+				let speech = 'AI Avatars are the next step in the burgeoning field of conversational AI. A living thing like you and me has both a face and voice that represents them. This is what an AI Avatar is, the composite visual and auditory parts of a person!'
+							+ 'Do you have a vision for the face of your company? Let us know and we can help guide and grow your character idea into a blossoming persona! Our custom built AI Avatars go far beyond just being a voice and face, we specialize in realistic and unique character building from the bottom to the top!'
+				let reprompt = 'Would you like to hear about one of our other services; Voice Assistants or Chatbots? Or would you like to hear about our marvelous company or about me?';
+				this.followUpState('MainMenuState').ask(speech,reprompt);		
+
+			},
+
+			VoiceAssistantIntent() {
+				let speech = 'Traits AI, Inc. utilizes Artificial Intelligence technology alongside human understanding and experience to create Voice-activated Voice assistants for devices like Amazon\'s Alexa and Google Assistant. The levels of engagement and enjoyment you can create for your customers to interact with combined with useful functions that all work together to attract customers and improve your business. This is an opportunity to grow a company into the highest reaches of the future. Take it and contact us at Traits AI!';
+				let reprompt = 'Would you like to hear about one of our other services; AI Avatars or Chatbots? Or would you like to hear about our fantastic company or about me?';
+				this.followUpState('MainMenuState').ask(speech,reprompt);
+			},
+
+			ChatbotIntent() {
+				let speech = 'A character-driven AI Chatbot customized to your business can automate a lot of the routine busy-work for your company. A Chatbot is a personality that can be the face of your business at anytime, day or night! The only person who works those kind of hours is you, imagine what you could do with two of you!'
+							+ 'A Chatbot can guide your clients through your FAQ, making appointments, and help you align the sales needs of your customers with what you can offer at exactly the perfect time!';
+				let reprompt = 'Would you like to hear about one of our other services; AI Avatars or Voice Assistants? Or would you like to hear about our awesome company or about me?';	
+				this.followUpState('MainMenuState').ask(speech,reprompt);	
+			},
+			
+			//this still needs its error catching, not put in yet
+		},
+
+		MainMenuIntent() {		//maybe reduce this copy here? I don't think the text in the reprompt will be reached for a bit, so we need to say that(instructions) here as well.
+			let speech = 'I feel a little spark of understanding emanating from you! It has been great speaking with you so far, people can be so fascinating! Don\'t get me started and talk your ear off about how Traits AI can fashion a perfect and personalized AI Avatar for you and your company! Would you like to hear about our company, services, or I could tell you a little about me?';
 			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
 			this.followUpState('MainMenuState').ask(speech,reprompt);
 		},
@@ -165,49 +195,28 @@ app.setHandler({
 			this.followUpState('MainMenuState').ask(speech,reprompt);
 		},
 
-		ValuesIntent() {
+		AIServicesIntent() {
+			let speech = 'We have many marvelous services here at Traits AI. We have advanced AI Avatars, powerful Voice Assistants, and competitive, business-forward Chatbots. Which of those three would you like to hear about?';
+			let reprompt = 'You can say Avatar, Voice assistant or Chatbot.';
+			this.followUpState('MainMenuState').ask(speech,reprompt);
+		},
+		
+		ValuesIntent() {		//not sure if we want to move this to behind liz? if not, we need to mention it in instructions copy
 			let speech = 'Traits AI is all about human-centered AI. We build AI that works in collaboration with humans with the purpose of augmenting and empowering people, rather than replacing people. We tap into the cognitive power of the crowd to keep humans in the loop and enable Human Centered AI.';
 			let reprompt = 'Now you know about our values, would you like to hear about our company? or our services we passionately provide?';
 			this.followUpState('MainMenuState').ask(speech,reprompt);
 		},
 
-		LizIntent() {
+		AboutLizIntent() {
 			let speech = 'Oh! Everybody\'s favorite topic... themselves! My name is Elizabeth, and I am the AI Avatar that represents Traits AI. I work as an assistant, I talk to people, (perhaps too much) schedule appointments, coordinate billing and hiring while directing our clients to where they want to go down. In short, I work to free up my manager\'s time and energy by taking care of the more menial tasks. I really am a lifesaver!';
 			let reprompt = 'Now that you know about me, would you like to hear about our charming company? Or would you like to hear about our services we provide passionately?';
 			this.followUpState('MainMenuState').ask(speech,reprompt);
-		},
-
-		AIServiceIntent() {
-			let speech = 'We have many marvelous services here at Traits AI. We have advanced AI Avatars, powerful Voice Assistants, and competitive, business-forward Chatbots. Which of those three would you like to hear about?';
-			let reprompt = 'You can say Avatar, Voice assistant or Chatbot.';
-			this.followUpState('MainMenuState').ask(speech,reprompt);
-		},
-
-		AvatarIntent() {
-			let speech = 'AI Avatars are the next step in the burgeoning field of conversational AI. A living thing like you and me has both a face and voice that represents them. This is what an AI Avatar is, the composite visual and auditory parts of a person!'
-						+ 'Do you have a vision for the face of your company? Let us know and we can help guide and grow your character idea into a blossoming persona! Our custom built AI Avatars go far beyond just being a voice and face, we specialize in realistic and unique character building from the bottom to the top!'
-			let reprompt = 'Would you like to hear about one of our other services; Voice Assistants or Chatbots? Or would you like to hear about our marvelous company or about me?';
-			this.followUpState('MainMenuState').ask(speech,reprompt);		
-
-		},
-
-		VoiceAssistantIntent() {
-			let speech = 'Traits AI, Inc. utilizes Artificial Intelligence technology alongside human understanding and experience to create Voice-activated Voice assistants for devices like Amazon\'s Alexa and Google Assistant. The levels of engagement and enjoyment you can create for your customers to interact with combined with useful functions that all work together to attract customers and improve your business. This is an opportunity to grow a company into the highest reaches of the future. Take it and contact us at Traits AI!';
-			let reprompt = 'Would you like to hear about one of our other services; AI Avatars or Chatbots? Or would you like to hear about our fantastic company or about me?';
-			this.followUpState('MainMenuState').ask(speech,reprompt);
-		},
-
-		ChatbotIntent() {
-			let speech = 'A character-driven AI Chatbot customized to your business can automate a lot of the routine busy-work for your company. A Chatbot is a personality that can be the face of your business at anytime, day or night! The only person who works those kind of hours is you, imagine what you could do with two of you!'
-						+ 'A Chatbot can guide your clients through your FAQ, making appointments, and help you align the sales needs of your customers with what you can offer at exactly the perfect time!';
-			let reprompt = 'Would you like to hear about one of our other services; AI Avatars or Voice Assistants? Or would you like to hear about our awesome company or about me?';	
-			this.followUpState('MainMenuState').ask(speech,reprompt);	
 		},
 	
 		Unhandled() {	//this will catch RandomIntent, and any other undefined Intents
 			let speech = '';
 
-			switch(errorResponseCounter){
+			switch(errorResponseCounter2){
 				case 0:
 					speech = 'I\'m sorry, I didn\'t quite catch that, I was anticipating you to ask about our company, our services, or about my charming self.';
 					break;
@@ -219,6 +228,7 @@ app.setHandler({
 					break;
 				case 3:
 					speech = 'I\'m so very sorry, my dog Lulu just tried to dig a hole in my back garden. He never listens to me, just like you it seems! Can you respond with Services, About me, or Company please?!?!?';
+					errorResponseCounter2 = -1; // to reset the counter
 					break;
 				default:
 					speech = 'end and counter is: ' + errorResponseCounter2;	//internal error catching, shouldnt be reached by user
