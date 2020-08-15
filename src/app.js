@@ -51,54 +51,60 @@ app.setHandler({
 	//from the GetNameIntent and then prompts another one, linking ConnectionFromIntroToMainState to the Main Menu State. Perhaps we could remove a dummy question? You cannot ask 2 seperate questions 
 	//within one state. It expects a user response after .ask() method to match to an Intent.
 	
-	
+
+//first part of Intro State, at this point, the Digital Assistants are not segmented into their own substate at this time, We could, but would also need to keep them where they are anyway, to catch that case.
 	DigitalAssistantStatePart1: {  		
 	
-		MainMenuIntent() {			//used for testing main menu, to skip intro messages, this command is not told to user at this point, maybe remove at the end?
+		MainMenuIntent() {			//used for testing main menu, to skip intro messages, 'skip, main menu' this command is not told to user at this point, maybe remove at the end of devlopment?
 			return this.toStateIntent('MainMenuState', 'MainMenuIntroIntent');
 		},
 	
 		WhatDigitalAssistantIntent() {
 			let speech = 'What is a digital assistant? A digital assistant is an AI empowered persona that acts as a representative for a business!';
 			let reprompt = 'If you have a favorite digital assistant, please say yes, other wise you can say no';
-			this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt); //to cycle back, for testing
+			this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt); //to cycle back, asking again for a digital assistant
 		},
+		
 		SiriIntent() {
 			let speech = 'Oh yes, Siri is really great! She was one of the very first digital assistants and holds a special place in many people\'s hearts! People can be so fascinating to chat with! You know my name. What\'s your name?';
 			let reprompt = 'Isn\'t Siri the greatest! What\'s your name?';
-			this.followUpState('introPart2NameState').ask(speech, reprompt); //to cycle back, for testing, it will go to introPart2NameState in actuality 
-			//return this.toIntent('WhatDigitalAssistantIntent');
+			this.followUpState('introPart2NameState').ask(speech, reprompt); //goes to introPart2NameState after asking for name of user
 		},
-		AlexaIntent() {	//it does not allow you to say Alexa it appears, issues here.
+		
+		AlexaIntent() {	//it does not allow you to say Alexa it appears, issues here. I have added invocations of "Alexa Skill" and others to deal with this, at this point.
 			let speech = 'You know I love Alexa, too! She always takes care of us smaller digital assistants, guiding and providing us with a platform to chat and visit with new people, like you!!! You know my name. What\'s your name?';
 			let reprompt = 'Alexa is one of the titans! What\'s your name?';
-			this.followUpState('introPart2NameState').ask(speech, reprompt); //to cycle back, for testing
+			this.followUpState('introPart2NameState').ask(speech, reprompt); //goes to introPart2NameState after asking for name of user
 		},
+		
 		GoogleAssistantIntent() {
 			let speech = 'Nice pick! Google Assistant is powerful in coordinating and collaborating with users to make the mundane more manageable. People can be so fascinating to chat with! You know my name. What\'s your name?';
 			let reprompt = 'Google\'s assisntant adds so much power to your fingertips! What\'s your name?';
-			this.followUpState('introPart2NameState').ask(speech, reprompt); //to cycle back, for testing
+			this.followUpState('introPart2NameState').ask(speech, reprompt); //goes to introPart2NameState after asking for name of user
 		},
+		
 		YesIntent() {
 			let speech = 'Oh really? Do tell! Who is that lucky one? Is it Siri, Google Assistant, Alexa or someone else?';
 			let reprompt = 'Is it Siri, Google Assistant, Alexa or someone else?';
-			this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt); //to cycle back, for testing at this point
+			this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt); //to cycle back, asking again for a digital assistant
 		},
+		
 		NoIntent() {					//maybe reduce this copy?
 			let speech = 'Oh, you don\'t have a favorite digital assistant? Well maybe I can be your favorite! I\'ll work hard to try to impress you. People can be so fascinating to chat with! You know my name. What\'s your name?';
 			let reprompt = 'Can I try to impress you? What\'s your name?';
-			this.followUpState('introPart2NameState').ask(speech, reprompt);	//this is the one connected to next state, others are not at this point.
+			this.followUpState('introPart2NameState').ask(speech, reprompt);	//goes to introPart2NameState after asking, taking no for an answer, asking for name of user
 			
 		}, 
+		//This is to catch some potential responses of 'someone, someone else' and others at this time, we can add actual Virtual Assistant names to this invocation in the alexa dev. console also.
 		UnlistedAssistantIntent() {					
 			let speech = 'Oh! I wonder if there is some new competition around! People can be so fascinating and delightful to learn from and chat with! You know my name. What\'s your name?';
 			let reprompt = 'I guess there might be a new Sheriff in town!';
-			this.followUpState('introPart2NameState').ask(speech, reprompt);	//this is the one connected to next state, others are not at this point.
+			this.followUpState('introPart2NameState').ask(speech, reprompt);	//goes to introPart2NameState after asking for name of user
 			
 		}, 
 		
 		
-		
+//error catching for Intro State		
 		Unhandled() {	//this will catch RandomIntent, and any other undefined Intents
 			let speech = '';
 			//var errorResponseCounterIntro = Math.floor(Math.random() * 5);		//for random if wanted
@@ -107,9 +113,8 @@ app.setHandler({
 				So this is working at the moment, if the user does not say any specific utterances mapped to the yes/no/what intents, this error catching will fire, as we desire. 
 				However, initially, it appears there are some bugs and it will start on a (random? not sure) case, as I am seeing it start on a couple different ones, nonetheless, once 
 				it starts, it will cycle through all of them and will reset at the last one. The issue is at the starting one, I am not sure why exactly. I think it is somehow being incremented 
-				before the switch statement or something. Anyway, not sure that bug matters much, sometimes it is going to case 0 also.
+				before the switch statement or something. Anyway, not sure that bug matters much, sometimes it is going to case 0 also. - Appears to be working now?
 			*/
-
 			switch(errorResponseCounterIntro){
 				case 0:
 					speech = 'My bad, I was distracted by my dog Lulu, and didn\'t quite catch what you just said. I was expecting you to tell me your favorite digital assistant like Siri, Alexa, or Google Assistant. Or if you don\'t have one say I don\'t have one.';
@@ -131,7 +136,6 @@ app.setHandler({
 					speech = 'end and counter is: ' + errorResponseCounterIntro;	//internal error catching, shouldnt be reached by user
 					break;
 			} 
-
 			errorResponseCounterIntro++;
 			let reprompt = 'Is it Siri, Google Assistant, Alexa or someone else?';
 			this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt); //to cycle back, as we would want to if they say an unassigned intent
@@ -140,7 +144,7 @@ app.setHandler({
 			
 	},
 	
-	
+//connection between DigitalAssistantStatePart1 (the intro part 1) and ConnectionFromIntroToMainState, also gathers user name, partly segmented for that reason	
 	introPart2NameState: {		//issue with GetName intent, isolating it helps any mismatching errors
 		
 		GetNameIntent() {		//can use user name elsewhere in copy, if desired.																															
@@ -151,9 +155,13 @@ app.setHandler({
 			
 		},
 		
+		//This can be buggy, if you don't say what it parses/understands as a name, it breaks it
+		
+		
 	},
 	
-	ConnectionFromIntroToMainState: {		//connects GetName portion to Main state, avoiding issues with GetName perceiving names in communication, regardless of what user says in response to dummy question, will say this
+//connection between introPart2NameState and MainMenuState
+	ConnectionFromIntroToMainState: {	//connects GetName portion to Main state, avoiding issues with GetName perceiving names in communication, regardless of what user says in response to dummy question, will say this
 			
 			Unhandled() {
 				if(connectingToMainStatementCounter === 2){	//reset the counter, not sure if this could be reached by user
@@ -173,10 +181,25 @@ app.setHandler({
 			},
 			
 	}, 
-	
+
+
+//Main Menu State, the largest, most major state.	
 	MainMenuState: {
-		
-		ServicesState: {
+		//this intent is only reached and fires off when moving from the intro to the main menu, otherwise the user can never reach this.
+		MainMenuIntroIntent() {		//maybe reduce this copy here? I don't think the text in the reprompt will be reached for a bit, so we need to say that(instructions) here as well.
+			let speech = 'I feel a little spark of understanding emanating from you! It has been great speaking with you so far, people can be so fascinating! Don\'t get me started and talk your ear off about how Traits AI can fashion a perfect and personalized AI Avatar for you and your company! Would you like to hear about our company, services, or I could tell you a little about me?';
+			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
+			this.followUpState('MainMenuState').ask(speech,reprompt);
+		},
+
+//AI Services with a sub menu, places user in submenu state after prompting
+		AIServicesIntent() {
+			let speech = 'We have many marvelous services here at Traits AI. We have advanced AI Avatars, powerful Voice Assistants, and competitive, business-forward Chatbots. Which of those three would you like to hear about?';
+			let reprompt = 'You can say Avatar, Voice assistant or Chatbot.';
+			this.followUpState('MainMenuState.ServicesSubMenuState').ask(speech,reprompt);
+		},
+		//Services submenu		
+		ServicesSubMenuState: {
 			AvatarIntent() {
 				let speech = 'AI Avatars are the next step in the burgeoning field of conversational AI. A living thing like you and me has both a face and voice that represents them. This is what an AI Avatar is, the composite visual and auditory parts of a person!'
 							+ 'Do you have a vision for the face of your company? Let us know and we can help guide and grow your character idea into a blossoming persona! Our custom built AI Avatars go far beyond just being a voice and face, we specialize in realistic and unique character building from the bottom to the top!'
@@ -222,31 +245,19 @@ app.setHandler({
 
 				errorResponseCounterServices++;
 				let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
-				this.followUpState('MainMenuState.ServicesState').ask(speech, reprompt); //to cycle back, as we would want to if they say an unassigned intent
+				this.followUpState('MainMenuState.ServicesSubMenuState').ask(speech, reprompt); //to cycle back, as we would want to if they say an unassigned intent
 			
 			},
 		},
-
-		//this intent is only reached and fires off when moving from the intro to the main menu, otherwise the user can never reach this.
-		MainMenuIntroIntent() {		//maybe reduce this copy here? I don't think the text in the reprompt will be reached for a bit, so we need to say that(instructions) here as well.
-			let speech = 'I feel a little spark of understanding emanating from you! It has been great speaking with you so far, people can be so fascinating! Don\'t get me started and talk your ear off about how Traits AI can fashion a perfect and personalized AI Avatar for you and your company! Would you like to hear about our company, services, or I could tell you a little about me?';
-			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
-			this.followUpState('MainMenuState').ask(speech,reprompt);
-		},
 		
-		AIServicesIntent() {
-			let speech = 'We have many marvelous services here at Traits AI. We have advanced AI Avatars, powerful Voice Assistants, and competitive, business-forward Chatbots. Which of those three would you like to hear about?';
-			let reprompt = 'You can say Avatar, Voice assistant or Chatbot.';
-			this.followUpState('MainMenuState.ServicesState').ask(speech,reprompt);
-		},
-
+//About Company with a sub menu, places user in submenu state
 		AboutCompanyIntent() {
 			let speech = 'Traits AI is a tech company specializing in Conversational Artificial Intelligence, like me! We design, build and create a well-defined character or an electric persona to act as a virtual representative of your business. This gleaming character adds shine to your business by handling many routine tasks like scheduling and billing while making your customer smile.'
 						+ ' Would you like to hear about something close to my heart, our values at Traits AI? We can also talk about our services if you like! Also, I could bend your ear about my life story if you are curious.';
 			let reprompt = 'Would you like to hear about our values at Traits AI, about me, or about our services?';
-			this.followUpState('AboutCompanySubMenuState').ask(speech,reprompt);
+			this.followUpState('MainMenuState.AboutCompanySubMenuState').ask(speech,reprompt);
 		},
-		
+		//About Company submenu
 		AboutCompanySubMenuState: {
 			
 			ValuesIntent() {
@@ -256,30 +267,20 @@ app.setHandler({
 				let reprompt = 'Would you like to hear about our company? or our services we passionately provide?';
 				this.followUpState('MainMenuState.AboutCompanySubMenuState').ask(speech,reprompt);
 				
-			},
+			}, 
 			
 			AboutLizIntent() {
-				let speech = '';
 				return this.toStateIntent('MainMenuState', 'AboutLizIntent');
 			},
 			
 			AIServicesIntent() {
-				let speech = '';
 				return this.toStateIntent('MainMenuState', 'AIServicesIntent');
 				
-			},
-			
+			}, 
 			
 		},
-		
-		
-												//Moved this to within AboutCompanySubMenuState
-		/* ValuesIntent() {		
-			let speech = 'Traits AI is all about human-centered AI. We build AI that works in collaboration with humans with the purpose of augmenting and empowering people, rather than replacing people. We tap into the cognitive power of the crowd to keep humans in the loop and enable Human Centered AI.';
-			let reprompt = 'Now you know about our values, would you like to hear about our company? or our services we passionately provide?';
-			this.followUpState('MainMenuState').ask(speech,reprompt);
-		}, */
 
+//About Liz Intent with submenu, places user in submenu state
 		AboutLizIntent() {
 			let speech = 'Oh! Everybody\'s favorite topic... themselves! My name is Elizabeth, and I am the AI Avatar that represents Traits AI. I work as an assistant, I talk to people, (perhaps too much) schedule appointments, coordinate billing and hiring while directing our clients to where they want to go down. Now that you know about me, would you like to hear about our charming company? Or would you like to hear about our services?';
 			//alternate copy option below, using a shorter one.
@@ -287,7 +288,7 @@ app.setHandler({
 			let reprompt = 'Would you like to hear about our charming company? Or would you like to hear about our services we provide passionately?';
 			this.followUpState('MainMenuState.AboutLizSubMenuState').ask(speech,reprompt);
 		},
-		
+		//About Liz submenu
 		AboutLizSubMenuState: {
 			
 			AboutCompanyIntent() {
@@ -300,8 +301,9 @@ app.setHandler({
 			},
 			
 		},
-	
-		Unhandled() {	//this will catch RandomIntent, and any other undefined Intents
+
+//error catching for main menu	
+		Unhandled() {	
 			let speech = '';
 
 			switch(errorResponseCounterMainMenu){
@@ -327,14 +329,13 @@ app.setHandler({
 			errorResponseCounterMainMenu++;
 			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
 			this.followUpState('MainMenuState').ask(speech, reprompt); //to cycle back, as we would want to if they say an unassigned intent
-			
 		},
 	
 	
-	},
+	}, //End MainMenuState here
+
 
 });
-
  
 
 module.exports = { app };
