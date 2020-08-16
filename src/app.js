@@ -55,7 +55,7 @@ app.setHandler({
 //first part of Intro State, at this point, the Digital Assistants are not segmented into their own substate at this time, We could, but would also need to keep them where they are anyway, to catch that case.
 	DigitalAssistantStatePart1: {  		
 	
-		MainMenuIntent() {			//used for testing main menu, to skip intro messages, 'skip, main menu' this command is not told to user at this point, maybe remove at the end of devlopment?
+		MainMenuIntent() {			//used for testing main menu, to skip intro messages, 'skip, main menu' this command is not told to user at this point, maybe remove at the end of development?
 			return this.toStateIntent('MainMenuState', 'MainMenuIntroIntent');
 		},
 	
