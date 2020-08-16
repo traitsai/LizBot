@@ -158,6 +158,7 @@ app.setHandler({
 		
 	},
 	
+	
 //connection between introPart2NameState and MainMenuState
 	ConnectionFromIntroToMainState: {	//connects GetName portion to Main state, avoiding issues with GetName perceiving names in communication, regardless of what user says in response to dummy question, will say this
 			
@@ -179,11 +180,7 @@ app.setHandler({
 			},
 			
 	}, 
-
-		//This can be buggy, if you don't say what it parses/understands as a name, it breaks it
-		
-		
-	},
+	
 
 
 //Main Menu State, the largest, most major state.	
@@ -268,6 +265,7 @@ app.setHandler({
 				let speech = 'Traits AI is all about human-centered AI. We build AI that works in collaboration with humans with the purpose of augmenting and empowering people, rather than replacing people. We tap into the cognitive power of the crowd to keep humans in the loop and enable Human Centered AI. Now you know about our stalwart values, would you like to hear about me or our services we provide?';
 				//let speech = 'Traits AI is all about human-centered AI. We build AI that works in collaboration with humans with the purpose of augmenting and empowering people, rather than replacing people. We tap into the cognitive power of the crowd to keep humans in the loop and enable Human Centered AI.';
 				let reprompt = 'Would you like to hear about our company? or our services we passionately provide?';
+
 
 				this.followUpState('MainMenuState.AboutCompanySubMenuState').ask(speech,reprompt);
 				
