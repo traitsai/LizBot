@@ -6,7 +6,7 @@
   "dependencies": {
     "jovo-db-filedb": "^3.0.14",
     "jovo-framework": "^3.0.22",
-    "jovo-platform-alexa": "^3.0.15",
+    "jovo-platform-alexa": "^3.0.29",
     "jovo-platform-googleassistant": "^3.0.15",
     "jovo-plugin-debugger": "^3.0.14"
   },
