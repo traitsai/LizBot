@@ -159,7 +159,7 @@ app.setHandler({
 	},
 	
 //connection between introPart2NameState and MainMenuState
-	ConnectionFromIntroToMainState: {	//connects GetName portion to Main state, avoiding issues with GetName perceiving names in communication, regardless of what user says in response to dummy question, will say this
+	/*ConnectionFromIntroToMainState: {	//connects GetName portion to Main state, avoiding issues with GetName perceiving names in communication, regardless of what user says in response to dummy question, will say this
 			
 			Unhandled() {
 				if(connectingToMainStatementCounter === 2){	//reset the counter, not sure if this could be reached by user
@@ -183,7 +183,7 @@ app.setHandler({
 		//This can be buggy, if you don't say what it parses/understands as a name, it breaks it
 		
 		
-	},
+	},*/
 	
 //connection between introPart2NameState and MainMenuState
 	ConnectionFromIntroToMainState: {	//connects GetName portion to Main state, avoiding issues with GetName perceiving names in communication, regardless of what user says in response to dummy question, will say this
