@@ -291,9 +291,9 @@ app.setHandler({
 				//let speech = 'Traits AI is all about human-centered AI. We build AI that works in collaboration with humans with the purpose of augmenting and empowering people, rather than replacing people. We tap into the cognitive power of the crowd to keep humans in the loop and enable Human Centered AI.';
 				let reprompt = 'Would you like to hear about our company? or our services we passionately provide?';
 
-				//this.followUpState('MainMenuState').ask(speech,reprompt);
+				this.followUpState('MainMenuState').ask(speech,reprompt);
 
-				this.followUpState('MainMenuState.AboutCompanySubMenuState').ask(speech,reprompt);
+				//this.followUpState('MainMenuState.AboutCompanySubMenuState').ask(speech,reprompt);
 				
 			}, 
 			
