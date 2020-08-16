@@ -293,7 +293,7 @@ app.setHandler({
 
 				this.followUpState('MainMenuState').ask(speech,reprompt);
 
-				this.followUpState('MainMenuState.AboutCompanySubMenuState').ask(speech,reprompt);
+				//this.followUpState('MainMenuState.AboutCompanySubMenuState').ask(speech,reprompt);
 				
 			}, 
 			
