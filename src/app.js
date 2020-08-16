@@ -45,6 +45,16 @@ app.setHandler({
 	
 	DigitalAssistantStatePart1: {  
 	
+<<<<<<< HEAD
+=======
+
+//first part of Intro State, at this point, the Digital Assistants are not segmented into their own substate at this time, We could, but would also need to keep them where they are anyway, to catch that case.
+	DigitalAssistantStatePart1: {  		
+	
+		MainMenuIntent() {			//used for testing main menu, to skip intro messages, 'skip, main menu' this command is not told to user at this point, maybe remove at the end of devlopment?
+			return this.toStateIntent('MainMenuState', 'MainMenuIntroIntent');
+		},
+>>>>>>> parent of 143e21e... Fix minor spelling error in documentation
 	
 		WhatDigitalAssistantIntent() {
 			let speech = 'What is a digital assistant? A digital assistant is an AI empowered persona that acts as a representative for a business!';
