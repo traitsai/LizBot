@@ -155,27 +155,7 @@ app.setHandler({
 			
 		},
 		
-<<<<<<< HEAD
-		NoIntent() {					//maybe reduce this copy?
-			let speech = 'Oh, you don\'t have a favorite digital assistant? Well maybe I can be your favorite! I\'ll work hard to try to impress you. I love learning more about interesting people.. And people can be so fascinating to chat with! You have known my name. What\'s your name then?';
-			let reprompt = 'Can I try to impress you?';
-			this.followUpState('introPart2NameState').ask(speech, reprompt);	//this is the one connected to next state, others are not at this point.
-			
-		}, 
 
-		GetNameIntent() {
-			let speech = 'Hey ' + this.$inputs.name.value + 'Nice to meet you! A name can reflect so many personalities, that is why I always go by my nickname Liz, only my Grandma calls me Elizabeth!';		//some issue here, in the debugger it is pulling the name correctly, but here it is assigning speech to null?
-			let reprompt = 'I didn\'t get your name!?';
-			
-			this.followUpState('introPart2NameState').ask(speech, reprompt);
-			return this.toIntent('MainMenuIntent');
-
-
-		},
-=======
-		//This can be buggy, if you don't say what it parses/understands as a name, it breaks it
-		
->>>>>>> 143e21e5be4adde0ed89ec5e29be2441cd4d6a65
 		
 	},
 	
@@ -284,7 +264,7 @@ app.setHandler({
 				let speech = 'Traits AI is all about human-centered AI. We build AI that works in collaboration with humans with the purpose of augmenting and empowering people, rather than replacing people. We tap into the cognitive power of the crowd to keep humans in the loop and enable Human Centered AI. Now you know about our stalwart values, would you like to hear about me or our services we provide?';
 				//let speech = 'Traits AI is all about human-centered AI. We build AI that works in collaboration with humans with the purpose of augmenting and empowering people, rather than replacing people. We tap into the cognitive power of the crowd to keep humans in the loop and enable Human Centered AI.';
 				let reprompt = 'Would you like to hear about our company? or our services we passionately provide?';
-				this.followUpState('MainMenuState.AboutCompanySubMenuState').ask(speech,reprompt);
+				this.followUpState('MainMenuState').ask(speech,reprompt);
 				
 			}, 
 			
@@ -325,11 +305,7 @@ app.setHandler({
 		Unhandled() {	
 			let speech = '';
 
-<<<<<<< HEAD
-			switch(errorResponseCounter2){
-=======
-			switch(errorResponseCounterMainMenu){
->>>>>>> 143e21e5be4adde0ed89ec5e29be2441cd4d6a65
+			switch(errorResponseCounterMainMenu) {
 				case 0:
 					speech = 'I\'m sorry, I didn\'t quite catch that, I was anticipating you to ask about our company, our services, or about my charming self.';
 					break;
