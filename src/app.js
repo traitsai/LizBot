@@ -139,12 +139,13 @@ app.setHandler({
 			this.followUpState('introPart2NameState').ask(speech, reprompt);	//this is the one connected to next state, others are not at this point.
 			
 		}, 
-		
+
 		GetNameIntent() {
-			let speech = 'Your name is ' + this.$inputs.name.value;		//some issue here, in the debugger it is pulling the name correctly, but here it is assigning speech to null?
+			let speech = 'Hey ' + this.$inputs.name.value + 'Nice to meet you! A name can reflect so many personalities, that is why I always go by my nickname Liz, only my Grandma calls me Elizabeth!';		//some issue here, in the debugger it is pulling the name correctly, but here it is assigning speech to null?
 			let reprompt = 'I didn\'t get your name!?';
 			
 			this.followUpState('introPart2NameState').ask(speech, reprompt);
+			return this.toIntent('MainMenuIntent');
 
 
 		},
@@ -207,7 +208,7 @@ app.setHandler({
 		Unhandled() {	//this will catch RandomIntent, and any other undefined Intents
 			let speech = '';
 
-			switch(errorResponseCounter){
+			switch(errorResponseCounter2){
 				case 0:
 					speech = 'I\'m sorry, I didn\'t quite catch that, I was anticipating you to ask about our company, our services, or about my charming self.';
 					break;
