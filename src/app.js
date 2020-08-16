@@ -155,6 +155,7 @@ app.setHandler({
 			
 		},
 		
+<<<<<<< HEAD
 
 		
 	},
@@ -181,6 +182,35 @@ app.setHandler({
 			
 	}, 
 
+=======
+		//This can be buggy, if you don't say what it parses/understands as a name, it breaks it
+		
+		
+	},
+	
+//connection between introPart2NameState and MainMenuState
+	ConnectionFromIntroToMainState: {	//connects GetName portion to Main state, avoiding issues with GetName perceiving names in communication, regardless of what user says in response to dummy question, will say this
+			
+			Unhandled() {
+				if(connectingToMainStatementCounter === 2){	//reset the counter, not sure if this could be reached by user
+					connectingToMainStatementCounter = 0;
+					
+				} else if(connectingToMainStatementCounter === 0){	//initial statement, asking a question where answer does no matter, fake engagement
+					let speech = 'Oh, I do love chatting! I\'m not the best listener at times... I tend to go on too much when I\'m enjoying the conversation. I bet you are a good listener though... Are you?';		
+					let reprompt = 'Are you a good listener?';
+					this.followUpState('ConnectionFromIntroToMainState').ask(speech, reprompt);
+					
+				} else if (connectingToMainStatementCounter === 1){ //second pass, sends user to MainMenuIntent
+					return this.toStateIntent('MainMenuState', 'MainMenuIntroIntent');
+				}
+				
+				connectingToMainStatementCounter++;
+				
+			},
+			
+	}, 
+
+>>>>>>> 67f6cd1a4a54e3ca6bb5a6fcc3c0a56daa9e2340
 
 //Main Menu State, the largest, most major state.	
 	MainMenuState: {
@@ -264,7 +294,11 @@ app.setHandler({
 				let speech = 'Traits AI is all about human-centered AI. We build AI that works in collaboration with humans with the purpose of augmenting and empowering people, rather than replacing people. We tap into the cognitive power of the crowd to keep humans in the loop and enable Human Centered AI. Now you know about our stalwart values, would you like to hear about me or our services we provide?';
 				//let speech = 'Traits AI is all about human-centered AI. We build AI that works in collaboration with humans with the purpose of augmenting and empowering people, rather than replacing people. We tap into the cognitive power of the crowd to keep humans in the loop and enable Human Centered AI.';
 				let reprompt = 'Would you like to hear about our company? or our services we passionately provide?';
+<<<<<<< HEAD
 				this.followUpState('MainMenuState').ask(speech,reprompt);
+=======
+				this.followUpState('MainMenuState.AboutCompanySubMenuState').ask(speech,reprompt);
+>>>>>>> 67f6cd1a4a54e3ca6bb5a6fcc3c0a56daa9e2340
 				
 			}, 
 			
@@ -305,7 +339,11 @@ app.setHandler({
 		Unhandled() {	
 			let speech = '';
 
+<<<<<<< HEAD
 			switch(errorResponseCounterMainMenu) {
+=======
+			switch(errorResponseCounterMainMenu){
+>>>>>>> 67f6cd1a4a54e3ca6bb5a6fcc3c0a56daa9e2340
 				case 0:
 					speech = 'I\'m sorry, I didn\'t quite catch that, I was anticipating you to ask about our company, our services, or about my charming self.';
 					break;
