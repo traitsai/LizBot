@@ -15,6 +15,7 @@ var errorResponseCounterIntro = 0; //counter for default error handling reponses
 var errorResponseCounterMainMenu = 0; //counter for error handling in main menu, will reset at the end of the cycle
 var errorResponseCounterServices = 0; //counter for error handling in main menu sub menu, services, resets at end of the cycle
 var connectingToMainStatementCounter = 0; //counter for ConnectionFromIntroToMainState, to first do one message, then another.
+var errorResponseCounterCompanySubMenu = 0; //counter for error handling in AboutCompanySubMenuState, reset at the end of the cycle.
 
 app.use(
   new Alexa(),
@@ -280,6 +281,33 @@ app.setHandler({
 				
 			}, 
 			
+			Unhandled() {	//error catching specific for about company portion.
+				let speech = '';
+
+				switch(errorResponseCounterCompanySubMenu){
+					case 0:
+						speech = 'I\'m sorry, I didn\'t quite catch that, I was anticipating you to ask about our company, our values, the AI services or about me!';
+						break;
+					case 1:
+						speech = 'I am very sorry, I didn\'t understand that. Could you say either company, values, AI services or Liz please!?!';
+						break;
+					case 2:
+						speech = 'I apologize, I live by a waterfall, and the water is really rushing by, I couldn\'t understand that. Could you say company, values, AI services or Liz either please?';
+						break;
+					case 3:
+						speech = 'I\'m so very sorry, my dog Lulu just tried to dig a hole in wood floor! He never listens to me, you take after him! Can you respond with company, values, AI services or Liz please?!?!?';
+						errorResponseCounterCompanySubMenu = -1; // to reset the counter
+						break;
+					default:
+						speech = 'end and counter is: ' + errorResponseCounterCompanySubMenu;	//internal error catching, shouldnt be reached by user
+						break;
+				} 
+
+				errorResponseCounterCompanySubMenu++;
+				let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
+				this.followUpState('MainMenuState.AboutCompanySubMenuState').ask(speech, reprompt); //to cycle back, as we would want to if they say an unassigned intent
+			
+			},
 		},
 
 //About Liz Intent with submenu, places user in submenu state
