@@ -222,7 +222,7 @@ app.setHandler({
 				let reprompt = 'Would you like to hear about one of our other services; AI Avatars or Voice Assistants? Or would you like to hear about our awesome company or about me?';	
 				this.followUpState('MainMenuState').ask(speech,reprompt);	
 			},
-			
+			//Error-catching
 			Unhandled() {	//error catching specific for services portion.
 				let speech = '';
 
@@ -281,7 +281,7 @@ app.setHandler({
 				return this.toStateIntent('MainMenuState', 'AIServicesIntent');
 				
 			}, 
-			
+			//Error-catching
 			Unhandled() {	//error catching specific for about company portion.
 				let speech = '';
 
@@ -382,7 +382,6 @@ app.setHandler({
 					speech = 'end and counter is: ' + errorResponseCounterMainMenu;	//internal error catching, shouldnt be reached by user
 					break;
 			} 
-
 
 			errorResponseCounterMainMenu++;
 			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
