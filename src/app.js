@@ -32,7 +32,7 @@ app.use(
 app.setHandler({
 	
   LAUNCH() {
-        let speech = 'Hello there! My name is Elizabeth, but you can call me Liz for short! I work at Traits AI as a  digital assistant. I\'d be happy to tell you more about our company. I\'m curious if you have a favorite digital assistant like Alexa, Google Assistant, Siri, or someone else. Do you have a favorite?';
+        let speech = 'Hello there! My name is Elizabeth, but you can call me Liz for short! I work at Traits AI as a digital assistant. I\'m curious if you have a favorite digital assistant. Do you have a favorite?';
         let reprompt = 'If you have a favorite digital assistant, please say yes, other wise you can say no';
 		this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt);
     },
@@ -86,8 +86,8 @@ app.setHandler({
 		},
 		
 		YesIntent() {
-			let speech = 'Oh really? Do tell! Who is that lucky one? Is it Siri, Google Assistant, Alexa or someone else?';
-			let reprompt = 'Is it Siri, Google Assistant, Alexa or someone else?';
+			let speech = 'Oh really? I hope I can earn that place on your pedestal!';
+			let reprompt = 'Give me my chance to shine!';
 			this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt); //to cycle back, asking again for a digital assistant
 		},
 		
@@ -150,20 +150,24 @@ app.setHandler({
 	introPart2NameState: {		//issue with GetName intent, isolating it helps any mismatching errors
 		
 		GetNameIntent() {		//can use user name elsewhere in copy, if desired.																															
-			let speech = 'Hi ' + this.$inputs.name.value + '! Nice to meet you! A name can reflect so many personalities, that is why I always go by my nickname Liz, only my Grandma calls me Elizabeth! Do your relatives do cute little things like that?';	//works now
-			let reprompt = 'Do your relatives do cute little things like that? Like maybe your Grandma?';
+			let speech = 'Hi ' + this.$inputs.name.value + '! Nice to meet you! A name can reflect so many personalities! I am not the best listener at times... I tend to go on too much when I\'m enjoying the conversation. I bet you are a good listener though , aren\'t you?';	//works now
+			let reprompt = 'Are you a good listener?';
 			
 			this.followUpState('ConnectionFromIntroToMainState').ask(speech, reprompt);
 			
 		},
 
-		
 	},
 	
 	
 //connection between introPart2NameState and MainMenuState
 	ConnectionFromIntroToMainState: {	//connects GetName portion to Main state, avoiding issues with GetName perceiving names in communication, regardless of what user says in response to dummy question, will say this
 			
+			Unhandled() {
+				return this.toStateIntent('MainMenuState', 'MainMenuIntroIntent');
+			}
+			
+			/*						//REMOVE 1 of the DUMMY questions
 			Unhandled() {
 				if(connectingToMainStatementCounter === 2){	//reset the counter, not sure if this could be reached by user
 					connectingToMainStatementCounter = 0;
@@ -179,7 +183,7 @@ app.setHandler({
 				
 				connectingToMainStatementCounter++;
 				
-			},
+			}, */
 			
 	}, 
 	
