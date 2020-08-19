@@ -256,7 +256,7 @@ app.setHandler({
 			},
 		},
 		
-//About Company with a sub menu, places user in submenu state
+//About Company with a sub menu, places user in submenu state, this is within MainMenuState
 		AboutCompanyIntent() {
 			let speech = 'Traits AI is a tech company specializing in Conversational Artificial Intelligence, like me! We design, build and create a well-defined character or an electric persona to act as a virtual representative of your business. This gleaming character adds shine to your business by handling many routine tasks like scheduling and billing while making your customer smile.'
 						+ ' Would you like to hear about something close to my heart, our values at Traits AI? We can also talk about our services if you like! Also, I could bend your ear about my life story if you are curious.';
@@ -297,10 +297,10 @@ app.setHandler({
 						speech = 'I am very sorry, I didn\'t understand that. Could you say either company, values, AI services or Liz please!?!';
 						break;
 					case 2:
-						speech = 'I apologize, I live by a waterfall, and the water is really rushing by, I couldn\'t understand that. Could you say company, values, AI services or Liz either please?';
+						speech = 'I apologize, I live near a glacier, and a massive floe just broke off, and I couldn\'t understand that. Could you say company, values, AI services or Liz either please?';
 						break;
 					case 3:
-						speech = 'I\'m so very sorry, my dog Lulu just tried to dig a hole in wood floor! He never listens to me, you take after him! Can you respond with company, values, AI services or Liz please?!?!?';
+						speech = 'I\'m so very sorry, my dog Lulu just chewed a hole in my favorite blouse! He never follows my instructions, you take after him! Can you respond with company, values, AI services or Liz please?!?!?';
 						errorResponseCounterCompanySubMenu = -1; // to reset the counter
 						break;
 					default:
@@ -315,7 +315,7 @@ app.setHandler({
 			},
 		},
 
-//About Liz Intent with submenu, places user in submenu state
+//About Liz Intent with submenu, places user in submenu state, this is within MainMenuState
 		AboutLizIntent() {
 			let speech = 'Oh! Everybody\'s favorite topic... themselves! My name is Elizabeth, and I am the AI Avatar that represents Traits AI. I work as an assistant, I talk to people, (perhaps too much) schedule appointments, coordinate billing and hiring while directing our clients to where they want to go down. Now that you know about me, would you like to hear about our charming company? Or would you like to hear about our services?';
 			//alternate copy option below, using a shorter one.
@@ -345,10 +345,10 @@ app.setHandler({
 						speech = 'I am very sorry, I didn\'t understand that. Could you say either company, AI services or Liz please!?!';
 						break;
 					case 2:
-						speech = 'I apologize, I live by a waterfall, and the water is really rushing by, I couldn\'t understand that. Could you say company, AI services or Liz either please?';
+						speech = 'I apologize, I\'m just next door to a construction site, and they just started up the jackhammer! I couldn\'t understand that. Could you say company, AI services or Liz either please?';
 						break;
 					case 3:
-						speech = 'I\'m so very sorry, my dog Lulu just tried to dig a hole in wood floor! He never listens to me, you take after him! Can you respond with company, AI services or Liz please?!?!?';
+						speech = 'I\'m so very sorry, my dog Lulu just tromped through my place with dirty paws!!! He never does what I tell him, you take after him! Can you respond with company, AI services or Liz please?!?!?';
 						errorResponseCounterLizSubMenu = -1; // to reset the counter
 						break;
 					default:
