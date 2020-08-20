@@ -105,6 +105,12 @@ app.setHandler({
 			
 		}, 
 		
+//Repeat Intent, for when user asks for Liz to repeat the question in Intro		
+		RepeatIntent() {
+			let speech = 'I\'m curious if you have a favorite digital assistant. Do you have a favorite?';
+			let reprompt = 'Do you have a favorite?';
+			this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt); //to cycle back, now that user has heard the question.
+		},
 		
 //error catching for Intro State		
 		Unhandled() {	//this will catch RandomIntent, and any other undefined Intents
@@ -196,8 +202,8 @@ app.setHandler({
 			let speech = 'I feel a little spark of understanding emanating from you! It has been great speaking with you so far, people can be so fascinating! Don\'t get me started and talk your ear off about how Traits AI can fashion a perfect and personalized AI Avatar for you and your company! Would you like to hear about our company, services, or I could tell you a little about me?';
 			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
 			this.followUpState('MainMenuState').ask(speech,reprompt);
-		},
-
+		},	
+		
 //AI Services with a sub menu, places user in submenu state after prompting
 		AIServicesIntent() {
 			let speech = 'We have many marvelous services here at Traits AI. We have advanced AI Avatars, powerful Voice Assistants, and competitive, business-forward Chatbots. Which of those three would you like to hear about?';
@@ -226,7 +232,7 @@ app.setHandler({
 				let reprompt = 'Would you like to hear about one of our other services; AI Avatars or Voice Assistants? Or would you like to hear about our awesome company or about me?';	
 				this.followUpState('MainMenuState').ask(speech,reprompt);	
 			},
-			//Error-catching
+		//Error-catching
 			Unhandled() {	//error catching specific for services portion.
 				let speech = '';
 
@@ -283,12 +289,14 @@ app.setHandler({
 			
 			AIServicesIntent() {
 				return this.toStateIntent('MainMenuState', 'AIServicesIntent');
-				
 			}, 
-			//Error-catching
+			//Repeat Intent, for when user asks for Liz to repeat herself in AboutCompanySubMenuState, sends user back to AboutCompanyIntent, to hear about company again, and then ask what to do next
+			RepeatIntent() {
+				return this.toStateIntent('MainMenuState', 'AboutCompanyIntent');
+			},
+		//Error-catching
 			Unhandled() {	//error catching specific for about company portion.
 				let speech = '';
-
 				switch(errorResponseCounterCompanySubMenu){
 					case 0:
 						speech = 'I\'m sorry, I didn\'t quite catch that, I was anticipating you to ask about our company, our values, the AI services or about me!';
@@ -328,12 +336,15 @@ app.setHandler({
 			
 			AboutCompanyIntent() {
 				return this.toStateIntent('MainMenuState', 'AboutCompanyIntent');
-				
 			},
 			AIServicesIntent() {
 				return this.toStateIntent('MainMenuState', 'AIServicesIntent');
-				
 			},
+			//Repeat Intent, for when user asks for Liz to repeat herself in AboutLizSubMenuState, sends user back to AboutLiz intent, to hear about her again, and then ask what to do next
+			RepeatIntent() {
+				return this.toStateIntent('MainMenuState', 'AboutLizIntent');
+			},
+		//Error-catching 
 			Unhandled() {	//error catching specific for about company portion.
 				let speech = '';
 
@@ -363,11 +374,16 @@ app.setHandler({
 			},
 			
 		},
-
+		
+//Repeat Intent, for when user asks for Liz to repeat the question in the Main Menu	
+		RepeatIntent() {
+			let speech = 'Would you like to hear about our company, services, or I could tell you a little about me?';
+			let reprompt = 'Would you like to hear about our company, services, or little ol\' me?';
+			this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt); //to cycle back, now that user has heard the question.
+		},
 //error catching for main menu	
 		Unhandled() {	
 			let speech = '';
-
 			switch(errorResponseCounterMainMenu){
 				case 0:
 					speech = 'I\'m sorry, I didn\'t quite catch that, I was anticipating you to ask about our company, our services, or about my charming self.';
