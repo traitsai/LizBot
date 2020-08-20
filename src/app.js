@@ -34,7 +34,7 @@ app.setHandler({
   LAUNCH() {
         let speech = 'Hello there! My name is Elizabeth, but you can call me Liz for short! I work at Traits AI as a digital assistant. I\'m curious if you have a favorite digital assistant. Do you have a favorite?';
         let reprompt = 'If you have a favorite digital assistant, please say yes, other wise you can say no';
-		this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt);
+		this.followUpState('DigitalAssistantState').ask(speech, reprompt);
     },
 	
 	/*
@@ -55,7 +55,7 @@ app.setHandler({
 	
 
 //first part of Intro State, at this point, the Digital Assistants are not segmented into their own substate at this time, We could, but would also need to keep them where they are anyway, to catch that case.
-	DigitalAssistantStatePart1: {  		
+	DigitalAssistantState: {  		
 	
 		MainMenuIntent() {			//used for testing main menu, to skip intro messages, 'skip, main menu' this command is not told to user at this point, maybe remove at the end of development?
 			return this.toStateIntent('MainMenuState', 'MainMenuIntroIntent');
@@ -64,44 +64,44 @@ app.setHandler({
 		WhatDigitalAssistantIntent() {
 			let speech = 'What is a digital assistant? A digital assistant is an AI empowered persona that acts as a representative for a business!';
 			let reprompt = 'If you have a favorite digital assistant, please say yes, other wise you can say no';
-			this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt); //to cycle back, asking again for a digital assistant
+			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, asking again for a digital assistant
 		},
 		
 		SiriIntent() {
 			let speech = 'Oh yes, Siri is really great! She was one of the very first digital assistants and holds a special place in many people\'s hearts! People can be so fascinating to chat with! You know my name. What\'s your name?';
 			let reprompt = 'Isn\'t Siri the greatest! What\'s your name?';
-			this.followUpState('introPart2NameState').ask(speech, reprompt); //goes to introPart2NameState after asking for name of user
+			this.followUpState('introNameState').ask(speech, reprompt); //goes to introNameState after asking for name of user
 		},
 		
 		AlexaIntent() {	//it does not allow you to say Alexa it appears, issues here. I have added invocations of "Alexa Skill" and others to deal with this, at this point.
 			let speech = 'You know I love Alexa, too! She always takes care of us smaller digital assistants, guiding and providing us with a platform to chat and visit with new people, like you!!! You know my name. What\'s your name?';
 			let reprompt = 'Alexa is one of the titans! What\'s your name?';
-			this.followUpState('introPart2NameState').ask(speech, reprompt); //goes to introPart2NameState after asking for name of user
+			this.followUpState('introNameState').ask(speech, reprompt); //goes to introNameState after asking for name of user
 		},
 		
 		GoogleAssistantIntent() {
 			let speech = 'Nice pick! Google Assistant is powerful in coordinating and collaborating with users to make the mundane more manageable. People can be so fascinating to chat with! You know my name. What\'s your name?';
 			let reprompt = 'Google\'s assisntant adds so much power to your fingertips! What\'s your name?';
-			this.followUpState('introPart2NameState').ask(speech, reprompt); //goes to introPart2NameState after asking for name of user
+			this.followUpState('introNameState').ask(speech, reprompt); //goes to introNameState after asking for name of user
 		},
 		
 		YesIntent() {
 			let speech = 'Oh really? I hope I can earn that place on your pedestal!';
 			let reprompt = 'Give me my chance to shine!';
-			this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt); //to cycle back, asking again for a digital assistant
+			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, asking again for a digital assistant
 		},
 		
 		NoIntent() {					//maybe reduce this copy?
 			let speech = 'Oh, you don\'t have a favorite digital assistant? Well maybe I can be your favorite! I\'ll work hard to try to impress you. People can be so fascinating to chat with! You know my name. What\'s your name?';
 			let reprompt = 'Can I try to impress you? What\'s your name?';
-			this.followUpState('introPart2NameState').ask(speech, reprompt);	//goes to introPart2NameState after asking, taking no for an answer, asking for name of user
+			this.followUpState('introNameState').ask(speech, reprompt);	//goes to introNameState after asking, taking no for an answer, asking for name of user
 			
 		}, 
 		//This is to catch some potential responses of 'someone, someone else' and others at this time, we can add actual Virtual Assistant names to this invocation in the alexa dev. console also.
 		UnlistedAssistantIntent() {					
 			let speech = 'Oh! I wonder if there is some new competition around! People can be so fascinating and delightful to learn from and chat with! You know my name. What\'s your name?';
 			let reprompt = 'I guess there might be a new Sheriff in town!';
-			this.followUpState('introPart2NameState').ask(speech, reprompt);	//goes to introPart2NameState after asking for name of user
+			this.followUpState('introNameState').ask(speech, reprompt);	//goes to introNameState after asking for name of user
 			
 		}, 
 		
@@ -109,7 +109,7 @@ app.setHandler({
 		RepeatIntent() {
 			let speech = 'I\'m curious if you have a favorite digital assistant. Do you have a favorite?';
 			let reprompt = 'Do you have a favorite?';
-			this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt); //to cycle back, now that user has heard the question.
+			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, now that user has heard the question.
 		},
 		
 //error catching for Intro State		
@@ -146,14 +146,14 @@ app.setHandler({
 			} 
 			errorResponseCounterIntro++;
 			let reprompt = 'Is it Siri, Google Assistant, Alexa or someone else?';
-			this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt); //to cycle back, as we would want to if they say an unassigned intent
+			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, as we would want to if they say an unassigned intent
 			
 		},
 			
 	},
 	
-//connection between DigitalAssistantStatePart1 (the intro part 1) and ConnectionFromIntroToMainState, also gathers user name, partly segmented for that reason	
-	introPart2NameState: {		//issue with GetName intent, isolating it helps any mismatching errors
+//connection between DigitalAssistantState (the intro part 1) and ConnectionFromIntroToMainState, also gathers user name, partly segmented for that reason	
+	introNameState: {		//issue with GetName intent, isolating it helps any mismatching errors
 		
 		GetNameIntent() {		//can use user name elsewhere in copy, if desired.																															
 			let speech = 'Hi ' + this.$inputs.name.value + '! Nice to meet you! A name can reflect so many personalities! I am not the best listener at times... I tend to go on too much when I\'m enjoying the conversation. I bet you are a good listener though , aren\'t you?';	//works now
@@ -166,7 +166,7 @@ app.setHandler({
 	},
 	
 	
-//connection between introPart2NameState and MainMenuState
+//connection between introNameState and MainMenuState
 	ConnectionFromIntroToMainState: {	//connects GetName portion to Main state, avoiding issues with GetName perceiving names in communication, regardless of what user says in response to dummy question, will say this
 			
 			Unhandled() {
@@ -379,7 +379,7 @@ app.setHandler({
 		RepeatIntent() {
 			let speech = 'Would you like to hear about our company, services, or I could tell you a little about me?';
 			let reprompt = 'Would you like to hear about our company, services, or little ol\' me?';
-			this.followUpState('DigitalAssistantStatePart1').ask(speech, reprompt); //to cycle back, now that user has heard the question.
+			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, now that user has heard the question.
 		},
 //error catching for main menu	
 		Unhandled() {	
