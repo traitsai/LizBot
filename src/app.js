@@ -32,9 +32,9 @@ app.use(
 app.setHandler({
 	
   LAUNCH() {
-        let speech = 'Hello there! My name is Elizabeth, but you can call me Liz for short! I work at Traits AI as a digital assistant. I\'m curious if you have a favorite digital assistant. Do you have a favorite?';
-        let reprompt = 'If you have a favorite digital assistant, please say yes, other wise you can say no';
-		this.followUpState('DigitalAssistantState').ask(speech, reprompt);
+        let speech = 'Hello there! My name is Elizabeth, but you can call me Liz for short! I work at Traits AI as a  digital assistant. How are you today?';
+        let reprompt = 'How is your day?';
+		this.followUpState('IntroState').ask(speech, reprompt);
     },
 	
 	/*
@@ -76,6 +76,12 @@ app.setHandler({
 			this.followUpState('introNameState').ask(speech, reprompt);
 		},
 		
+		RepeatIntent() {
+			let speech = 'How are you today?';
+			let reprompt = 'How is your day?';
+			this.followUpState('introNameState').ask(speech, reprompt); //to cycle back, now that user has heard the question.
+		},
+
 		Unhandled() {																																	
 			let speech = 'I see. Before we get started, could I get your first name please?';
 			let reprompt = 'Could I get your first name please?';
