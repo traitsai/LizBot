@@ -59,40 +59,40 @@ app.setHandler({
 			let speech = 'I\'m happy to hear that. Before we get started, could I get your first name?';
 			let reprompt = 'I\'m so pleased to hear that. Could I get your first name please?';
 			
-			this.followUpState('introNameState').ask(speech, reprompt);
+			this.followUpState('IntroNameState').ask(speech, reprompt);
 		},
 		
 		BadIntent() {																																	
 			let speech = 'Oh no! I\'m sorry to hear that. Well hopefully your day gets better soon. Before we get started, could I get your first name?';
 			let reprompt = 'Could I get your first name please?';
 			
-			this.followUpState('introNameState').ask(speech, reprompt);
+			this.followUpState('IntroNameState').ask(speech, reprompt);
 		},
 		
 		HowAreYouIntent() {																																	
 			let speech = 'I\'m doing fabulous, thank you for asking! Before we get started, could I get your first name?';
 			let reprompt = 'Could I get your first name please?';
 			
-			this.followUpState('introNameState').ask(speech, reprompt);
+			this.followUpState('IntroNameState').ask(speech, reprompt);
 		},
 		
 		RepeatIntent() {
 			let speech = 'How are you today?';
 			let reprompt = 'How is your day?';
-			this.followUpState('introNameState').ask(speech, reprompt); //to cycle back, now that user has heard the question.
+			this.followUpState('IntroState').ask(speech, reprompt); //to cycle back, now that user has heard the question.
 		},
 
 		Unhandled() {																																	
 			let speech = 'I see. Before we get started, could I get your first name please?';
 			let reprompt = 'Could I get your first name please?';
 			
-			this.followUpState('introNameState').ask(speech, reprompt);
+			this.followUpState('IntroNameState').ask(speech, reprompt);
 		},
 		
 		
 	}
 	//connection between IntroState and DigitalAssistantState (the intro part 2) also gathers user name, partly segmented for that reason	
-	introNameState: {		//issue with GetName intent, isolating it helps any mismatching errors
+	IntroNameState: {		//issue with GetName intent, isolating it helps any mismatching errors
 		
 		GetNameIntent() {		//can use user name elsewhere in copy, if desired.																															
 			let speech = 'It\'s nice to meet you ' + this.$inputs.name.value + '! Here at Traits AI we build digital assistants. I\'m curious about what you think about digital assistants, do you enjoy speaking with any other assistants besides Alexa like Siri, Google, or Bixby?';	//works now
