@@ -55,7 +55,6 @@ app.setHandler({
 	
 	//TODO
 	IntroState: {
-		//NEED TO MAKE THESE INTENTS ON CONSOLE
 		GoodIntent() {																																	
 			let speech = 'I\'m happy to hear that. Before we get started, could I get your first name?';
 			let reprompt = 'I\'m so pleased to hear that. Could I get your first name please?';
@@ -120,12 +119,6 @@ app.setHandler({
 		SiriIntent() {
 			let speech = 'Oh yes, Siri is really great! She was one of the very first digital assistants and holds a special place in many people\'s hearts! People can be so fascinating to chat with! You know my name. What\'s your name?';
 			let reprompt = 'Isn\'t Siri the greatest! What\'s your name?';
-			this.followUpState('MainMenuState').ask(speech, reprompt); //goes to introNameState after asking for name of user
-		},
-		
-		AlexaIntent() {	//it does not allow you to say Alexa it appears, issues here. I have added invocations of "Alexa Skill" and others to deal with this, at this point.
-			let speech = 'You know I love Alexa, too! She always takes care of us smaller digital assistants, guiding and providing us with a platform to chat and visit with new people, like you!!! You know my name. What\'s your name?';
-			let reprompt = 'Alexa is one of the titans! What\'s your name?';
 			this.followUpState('MainMenuState').ask(speech, reprompt); //goes to introNameState after asking for name of user
 		},
 		
