@@ -117,20 +117,20 @@ app.setHandler({
 		},
 		
 		BixbyIntent() {
-			let speech = 'TODO';
-			let reprompt = 'TODO';
+			let speech = 'Great choice! Bixby is a powerful tool in automating commands to save SamSung users\' efforts.';
+			let reprompt = 'Bixby provides first-class experience to their users!';
 			this.followUpState('MainMenuState').ask(speech, reprompt); //to cycle back, asking again for a digital assistant
 		},
 		
 		SiriIntent() {
-			let speech = 'Oh yes, Siri is really great! She was one of the very first digital assistants and holds a special place in many people\'s hearts! People can be so fascinating to chat with! You know my name. What\'s your name?';
-			let reprompt = 'Isn\'t Siri the greatest! What\'s your name?';
+			let speech = 'Oh yes, Siri is really great! She was one of the very first digital assistants and holds a special place in many people\'s hearts!';
+			let reprompt = 'Isn\'t Siri the greatest!';
 			this.followUpState('MainMenuState').ask(speech, reprompt); //goes to introNameState after asking for name of user
 		},
 		
 		GoogleAssistantIntent() {
-			let speech = 'Nice pick! Google Assistant is powerful in coordinating and collaborating with users to make the mundane more manageable. People can be so fascinating to chat with! You know my name. What\'s your name?';
-			let reprompt = 'Google\'s assisntant adds so much power to your fingertips! What\'s your name?';
+			let speech = 'Nice pick! Google Assistant is powerful in coordinating and collaborating with users to make the mundane more manageable.';
+			let reprompt = 'Google\'s assisntant adds so much power to your fingertips!';
 			this.followUpState('MainMenuState').ask(speech, reprompt); //goes to introNameState after asking for name of user
 		},
 		
@@ -148,7 +148,7 @@ app.setHandler({
 		}, 
 		//This is to catch some potential responses of 'someone, someone else' and others at this time, we can add actual Virtual Assistant names to this invocation in the alexa dev. console also.
 		UnlistedAssistantIntent() {					
-			let speech = 'Oh! I wonder if there is some new competition around! People can be so fascinating and delightful to learn from and chat with! You know my name. What\'s your name?';
+			let speech = 'Oh! I wonder if there is some new competition around!';
 			let reprompt = 'I guess there might be a new Sheriff in town!';
 			this.followUpState('MainMenuState').ask(speech, reprompt);	
 			
