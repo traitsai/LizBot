@@ -51,10 +51,54 @@ app.setHandler({
 	//the intents within either cycle back to the start, asking for your favorite assistant, or if you give a 'no' or the assistant's name, it responds with 
 	//some copy and then links to the getName intent, which gets the user's name, says it back to them, and then links to ConnectionFromIntroToMainState, which responds to the previous dummy question 
 	//from the GetNameIntent and then prompts another one, linking ConnectionFromIntroToMainState to the Main Menu State. Perhaps we could remove a dummy question? You cannot ask 2 seperate questions 
-	//within one state. It expects a user response after .ask() method to match to an Intent.
+	//within one state. It expects a user response after .ask() method to match to an Intent. - THIS IS GETTING REVAMPED
 	
+	//TODO
+	IntroState: {
+		//NEED TO MAKE THESE INTENTS ON CONSOLE
+		GoodIntent() {																																	
+			let speech = 'I\'m happy to hear that. Before we get started, could I get your first name?';
+			let reprompt = 'I\'m so pleased to hear that. Could I get your first name please?';
+			
+			this.followUpState('introNameState').ask(speech, reprompt);
+		},
+		
+		BadIntent() {																																	
+			let speech = 'Oh no! I\'m sorry to hear that. Well hopefully your day gets better soon. Before we get started, could I get your first name?';
+			let reprompt = 'Could I get your first name please?';
+			
+			this.followUpState('introNameState').ask(speech, reprompt);
+		},
+		
+		HowAreYouIntent() {																																	
+			let speech = 'I\'m doing fabulous, thank you for asking! Before we get started, could I get your first name?';
+			let reprompt = 'Could I get your first name please?';
+			
+			this.followUpState('introNameState').ask(speech, reprompt);
+		},
+		
+		Unhandled() {																																	
+			let speech = 'I see. Before we get started, could I get your first name please?';
+			let reprompt = 'Could I get your first name please?';
+			
+			this.followUpState('introNameState').ask(speech, reprompt);
+		},
+		
+		
+	}
+	//connection between IntroState and DigitalAssistantState (the intro part 2) also gathers user name, partly segmented for that reason	
+	introNameState: {		//issue with GetName intent, isolating it helps any mismatching errors
+		
+		GetNameIntent() {		//can use user name elsewhere in copy, if desired.																															
+			let speech = 'It\'s nice to meet you ' + this.$inputs.name.value + '! Here at Traits AI we build digital assistants. I\'m curious about what you think about digital assistants, do you enjoy speaking with any other assistants besides Alexa like Siri, Google, or Bixby?';	//works now
+			let reprompt = 'Do you enjoy speaking with any other assistants besides Alexa like Siri, Google, or Bixby?';
+			
+			this.followUpState('DigitalAssistantState').ask(speech, reprompt);
+		},
 
-//first part of Intro State, at this point, the Digital Assistants are not segmented into their own substate at this time, We could, but would also need to keep them where they are anyway, to catch that case.
+	},
+
+
 	DigitalAssistantState: {  		
 	
 		MainMenuIntent() {			//used for testing main menu, to skip intro messages, 'skip, main menu' this command is not told to user at this point, maybe remove at the end of development?
@@ -67,33 +111,39 @@ app.setHandler({
 			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, asking again for a digital assistant
 		},
 		
+		BixbyIntent() {
+			let speech = 'TODO';
+			let reprompt = 'TODO';
+			this.followUpState('MainMenuState').ask(speech, reprompt); //to cycle back, asking again for a digital assistant
+		},
+		
 		SiriIntent() {
 			let speech = 'Oh yes, Siri is really great! She was one of the very first digital assistants and holds a special place in many people\'s hearts! People can be so fascinating to chat with! You know my name. What\'s your name?';
 			let reprompt = 'Isn\'t Siri the greatest! What\'s your name?';
-			this.followUpState('introNameState').ask(speech, reprompt); //goes to introNameState after asking for name of user
+			this.followUpState('MainMenuState').ask(speech, reprompt); //goes to introNameState after asking for name of user
 		},
 		
 		AlexaIntent() {	//it does not allow you to say Alexa it appears, issues here. I have added invocations of "Alexa Skill" and others to deal with this, at this point.
 			let speech = 'You know I love Alexa, too! She always takes care of us smaller digital assistants, guiding and providing us with a platform to chat and visit with new people, like you!!! You know my name. What\'s your name?';
 			let reprompt = 'Alexa is one of the titans! What\'s your name?';
-			this.followUpState('introNameState').ask(speech, reprompt); //goes to introNameState after asking for name of user
+			this.followUpState('MainMenuState').ask(speech, reprompt); //goes to introNameState after asking for name of user
 		},
 		
 		GoogleAssistantIntent() {
 			let speech = 'Nice pick! Google Assistant is powerful in coordinating and collaborating with users to make the mundane more manageable. People can be so fascinating to chat with! You know my name. What\'s your name?';
 			let reprompt = 'Google\'s assisntant adds so much power to your fingertips! What\'s your name?';
-			this.followUpState('introNameState').ask(speech, reprompt); //goes to introNameState after asking for name of user
+			this.followUpState('MainMenuState').ask(speech, reprompt); //goes to introNameState after asking for name of user
 		},
 		
 		YesIntent() {
-			let speech = 'Oh really? I hope I can earn that place on your pedestal!';
-			let reprompt = 'Give me my chance to shine!';
+			let speech = 'Oh really? Digital assistants can be so engaging and fun! Which is it, Siri, Bixby, or Google Assistant?';
+			let reprompt = 'Is it Siri, Bixby, or Google Assistant?';
 			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, asking again for a digital assistant
 		},
 		
-		NoIntent() {					//maybe reduce this copy?
-			let speech = 'Oh, you don\'t have a favorite digital assistant? Well maybe I can be your favorite! I\'ll work hard to try to impress you. People can be so fascinating to chat with! You know my name. What\'s your name?';
-			let reprompt = 'Can I try to impress you? What\'s your name?';
+		NoIntent() {					
+			let speech = 'Oh, I hope you will enjoy speaking with me! Digital assistants may not be perfect but I always bring something to the table.?';
+			let reprompt = 'Oh, I hope you will enjoy speaking with me!';
 			this.followUpState('introNameState').ask(speech, reprompt);	//goes to introNameState after asking, taking no for an answer, asking for name of user
 			
 		}, 
@@ -152,20 +202,9 @@ app.setHandler({
 			
 	},
 	
-//connection between DigitalAssistantState (the intro part 1) and ConnectionFromIntroToMainState, also gathers user name, partly segmented for that reason	
-	introNameState: {		//issue with GetName intent, isolating it helps any mismatching errors
-		
-		GetNameIntent() {		//can use user name elsewhere in copy, if desired.																															
-			let speech = 'Hi ' + this.$inputs.name.value + '! Nice to meet you! A name can reflect so many personalities! I am not the best listener at times... I tend to go on too much when I\'m enjoying the conversation. I bet you are a good listener though , aren\'t you?';	//works now
-			let reprompt = 'Are you a good listener?';
-			
-			this.followUpState('ConnectionFromIntroToMainState').ask(speech, reprompt);
-			
-		},
-
-	},
 	
 	
+//WITH the redesign, not sure if this is needed	
 //connection between introNameState and MainMenuState
 	ConnectionFromIntroToMainState: {	//connects GetName portion to Main state, avoiding issues with GetName perceiving names in communication, regardless of what user says in response to dummy question, will say this
 			
