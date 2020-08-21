@@ -79,7 +79,7 @@ app.setHandler({
 		RepeatIntent() {
 			let speech = 'How are you today?';
 			let reprompt = 'How is your day?';
-			this.followUpState('IntroState').ask(speech, reprompt); //to cycle back, now that user has heard the question.
+			this.followUpState('IntroState').ask(speech, reprompt); 
 		},
 
 		Unhandled() {																																	
@@ -92,8 +92,8 @@ app.setHandler({
 		
 	}
 	//connection between IntroState and DigitalAssistantState (the intro part 2) also gathers user name, partly segmented for that reason	
-	IntroNameState: {		//issue with GetName intent, isolating it helps any mismatching errors
-		
+	IntroNameState: {
+
 		GetNameIntent() {		//can use user name elsewhere in copy, if desired.																															
 			let speech = 'It\'s nice to meet you ' + this.$inputs.name.value + '! Here at Traits AI we build digital assistants. I\'m curious about what you think about digital assistants, do you enjoy speaking with any other assistants besides Alexa like Siri, Google, or Bixby?';	//works now
 			let reprompt = 'Do you enjoy speaking with any other assistants besides Alexa like Siri, Google, or Bixby?';
@@ -143,14 +143,14 @@ app.setHandler({
 		NoIntent() {					
 			let speech = 'Oh, I hope you will enjoy speaking with me! Digital assistants may not be perfect but I always bring something to the table.?';
 			let reprompt = 'Oh, I hope you will enjoy speaking with me!';
-			this.followUpState('introNameState').ask(speech, reprompt);	//goes to introNameState after asking, taking no for an answer, asking for name of user
+			this.followUpState('MainMenuState').ask(speech, reprompt);	
 			
 		}, 
 		//This is to catch some potential responses of 'someone, someone else' and others at this time, we can add actual Virtual Assistant names to this invocation in the alexa dev. console also.
 		UnlistedAssistantIntent() {					
 			let speech = 'Oh! I wonder if there is some new competition around! People can be so fascinating and delightful to learn from and chat with! You know my name. What\'s your name?';
 			let reprompt = 'I guess there might be a new Sheriff in town!';
-			this.followUpState('introNameState').ask(speech, reprompt);	//goes to introNameState after asking for name of user
+			this.followUpState('MainMenuState').ask(speech, reprompt);	
 			
 		}, 
 		
