@@ -18,6 +18,10 @@ var connectingToMainStatementCounter = 0; //counter for ConnectionFromIntroToMai
 var errorResponseCounterCompanySubMenu = 0; //counter for error handling in AboutCompanySubMenuState, reset at the end of the cycle.
 var errorResponseCounterLizSubMenu = 0; //counter for error handling in AboutLizSubMenuState, reset at the end of the cycle.
 
+var AboutAvatarsBeenHeard = false;
+var AboutVoiceAssistantsBeenHeard = false;
+var AboutChatbotsBeenHeard = false;
+
 app.use(
   new Alexa(),
   new GoogleAssistant(),
@@ -53,8 +57,13 @@ app.setHandler({
 	//from the GetNameIntent and then prompts another one, linking ConnectionFromIntroToMainState to the Main Menu State. Perhaps we could remove a dummy question? You cannot ask 2 seperate questions 
 	//within one state. It expects a user response after .ask() method to match to an Intent. - THIS IS GETTING REVAMPED
 	
-	//TODO
+	
 	IntroState: {
+				//TO BE REMOVED?
+		MainMenuIntent() {			//used for testing main menu, to skip intro messages, 'skip, main menu' this command is not told to user at this point, maybe remove at the end of development?
+			return this.toStateIntent('MainMenuState', 'MainMenuIntroIntent');
+		},
+		
 		GoodIntent() {																																	
 			let speech = 'I\'m happy to hear that. Before we get started, could I get your first name?';
 			let reprompt = 'I\'m so pleased to hear that. Could I get your first name please?';
@@ -107,14 +116,10 @@ app.setHandler({
 
 	DigitalAssistantState: {  		
 	
-		MainMenuIntent() {			//used for testing main menu, to skip intro messages, 'skip, main menu' this command is not told to user at this point, maybe remove at the end of development?
-			return this.toStateIntent('MainMenuState', 'MainMenuIntroIntent');
-		},
-	
 		WhatDigitalAssistantIntent() {
 			let speech = 'What is a digital assistant? A digital assistant is an AI empowered persona that acts as a representative for a business!';
-			let reprompt = 'If you have a favorite digital assistant, please say yes, other wise you can say no';
-			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, asking again for a digital assistant
+			let reprompt = 'A digital assistant is an AI empowered persona that acts as a representative for a business!';
+			this.followUpState('DigitalAssistantState').ask(speech, reprompt); 
 		},
 		
 		BixbyIntent() {
@@ -126,14 +131,14 @@ app.setHandler({
 		SiriIntent() {
 			let speech = 'Oh yes, Siri is really great! She was one of the very first digital assistants and holds a special place in many people\'s hearts!';
 			let reprompt = 'Isn\'t Siri the greatest!';
-			this.followUpState('MainMenuState').ask(speech, reprompt); //goes to introNameState after asking for name of user
+			this.followUpState('MainMenuState').ask(speech, reprompt); 
 			//return this.toStateIntent('MainMenuState', 'MainMenuIntroIntent');
 		},
 		
 		GoogleAssistantIntent() {
 			let speech = 'Nice pick! Google Assistant is powerful in coordinating and collaborating with users to make the mundane more manageable.';
 			let reprompt = 'Google\'s assisntant adds so much power to your fingertips!';
-			this.followUpState('MainMenuState').ask(speech, reprompt); //goes to introNameState after asking for name of user
+			this.followUpState('MainMenuState').ask(speech, reprompt); 
 		},
 		
 		YesIntent() {
@@ -165,13 +170,7 @@ app.setHandler({
 		Unhandled() {	//this will catch RandomIntent, and any other undefined Intents
 			let speech = '';
 			//var errorResponseCounterIntro = Math.floor(Math.random() * 5);		//for random if wanted
-			
-			/*
-				So this is working at the moment, if the user does not say any specific utterances mapped to the yes/no/what intents, this error catching will fire, as we desire. 
-				However, initially, it appears there are some bugs and it will start on a (random? not sure) case, as I am seeing it start on a couple different ones, nonetheless, once 
-				it starts, it will cycle through all of them and will reset at the last one. The issue is at the starting one, I am not sure why exactly. I think it is somehow being incremented 
-				before the switch statement or something. Anyway, not sure that bug matters much, sometimes it is going to case 0 also. - Appears to be working now?
-			*/
+
 			switch(errorResponseCounterIntro){
 				case 0:
 					speech = 'My bad, I was distracted by my dog Lulu, and didn\'t quite catch what you just said. I was expecting you to tell me your favorite digital assistant like Siri, Alexa, or Google Assistant. Or if you don\'t have one say I don\'t have one.';
@@ -200,37 +199,6 @@ app.setHandler({
 		},
 			
 	},
-	
-	
-	
-//WITH the redesign, not sure if this is needed	
-//connection between introNameState and MainMenuState
-	ConnectionFromIntroToMainState: {	//connects GetName portion to Main state, avoiding issues with GetName perceiving names in communication, regardless of what user says in response to dummy question, will say this
-			
-			Unhandled() {
-				return this.toStateIntent('MainMenuState', 'MainMenuIntroIntent');
-			}
-			
-			/*						//REMOVE 1 of the DUMMY questions
-			Unhandled() {
-				if(connectingToMainStatementCounter === 2){	//reset the counter, not sure if this could be reached by user
-					connectingToMainStatementCounter = 0;
-					
-				} else if(connectingToMainStatementCounter === 0){	//initial statement, asking a question where answer does no matter, fake engagement
-					let speech = 'Oh, I do love chatting! I\'m not the best listener at times... I tend to go on too much when I\'m enjoying the conversation. I bet you are a good listener though... Are you?';		
-					let reprompt = 'Are you a good listener?';
-					this.followUpState('ConnectionFromIntroToMainState').ask(speech, reprompt);
-					
-				} else if (connectingToMainStatementCounter === 1){ //second pass, sends user to MainMenuIntent
-					return this.toStateIntent('MainMenuState', 'MainMenuIntroIntent');
-				}
-				
-				connectingToMainStatementCounter++;
-				
-			}, */
-			
-	}, 
-	
 
 
 //Main Menu State, the largest, most major state.	
@@ -250,25 +218,29 @@ app.setHandler({
 		},
 		//Services submenu		
 		ServicesSubMenuState: {
+			
 			AvatarIntent() {
 				let speech = 'AI Avatars are the next step in the burgeoning field of conversational AI. A living thing like you and me has both a face and voice that represents them. This is what an AI Avatar is, the composite visual and auditory parts of a person!'
-							+ 'Do you have a vision for the face of your company? Let us know and we can help guide and grow your character idea into a blossoming persona! Our custom built AI Avatars go far beyond just being a voice and face, we specialize in realistic and unique character building from the bottom to the top!'
+							+ 'Do you have a vision for the face of your company? Let us know and we can help guide and grow your character idea into a blossoming persona! Our custom built AI Avatars go far beyond just being a voice and face, we specialize in realistic and unique character building from the bottom to the top! Would you like to hear more about our services?'
 				let reprompt = 'Would you like to hear about one of our other services; Voice Assistants or Chatbots? Or would you like to hear about our marvelous company or about me?';
-				this.followUpState('MainMenuState').ask(speech,reprompt);		
+				AboutAvatarsBeenHeard = true;
+				this.followUpState('MainMenuState.ServicesExitingState').ask(speech,reprompt);		
 
 			},
 
 			VoiceAssistantIntent() {
-				let speech = 'Traits AI, Inc. utilizes Artificial Intelligence technology alongside human understanding and experience to create Voice-activated Voice assistants for devices like Amazon\'s Alexa and Google Assistant. The levels of engagement and enjoyment you can create for your customers to interact with combined with useful functions that all work together to attract customers and improve your business. This is an opportunity to grow a company into the highest reaches of the future. Take it and contact us at Traits AI!';
+				let speech = 'Traits AI, Inc. utilizes Artificial Intelligence technology alongside human understanding and experience to create Voice-activated Voice assistants for devices like Amazon\'s Alexa and Google Assistant. The levels of engagement and enjoyment you can create for your customers to interact with combined with useful functions that all work together to attract customers and improve your business. This is an opportunity to grow a company into the highest reaches of the future. Take it and contact us at Traits AI! Would you like to hear more about our services?';
 				let reprompt = 'Would you like to hear about one of our other services; AI Avatars or Chatbots? Or would you like to hear about our fantastic company or about me?';
-				this.followUpState('MainMenuState').ask(speech,reprompt);
+				AboutVoiceAssistantsBeenHeard = true;
+				this.followUpState('MainMenuState.ServicesExitingState').ask(speech,reprompt);
 			},
 
 			ChatbotIntent() {
 				let speech = 'A character-driven AI Chatbot customized to your business can automate a lot of the routine busy-work for your company. A Chatbot is a personality that can be the face of your business at anytime, day or night! The only person who works those kind of hours is you, imagine what you could do with two of you!'
-							+ 'A Chatbot can guide your clients through your FAQ, making appointments, and help you align the sales needs of your customers with what you can offer at exactly the perfect time!';
+							+ 'A Chatbot can guide your clients through your FAQ, making appointments, and help you align the sales needs of your customers with what you can offer at exactly the perfect time! Would you like to hear more about our services?';
 				let reprompt = 'Would you like to hear about one of our other services; AI Avatars or Voice Assistants? Or would you like to hear about our awesome company or about me?';	
-				this.followUpState('MainMenuState').ask(speech,reprompt);	
+				AboutChatbotsBeenHeard = true;
+				this.followUpState('MainMenuState.ServicesExitingState').ask(speech,reprompt);	
 			},
 		//Error-catching
 			Unhandled() {	//error catching specific for services portion.
@@ -299,6 +271,85 @@ app.setHandler({
 			
 			},
 		},
+			
+		ServicesExitingState: {
+			NoIntent() {		//user says No to hear more about company or services at the end of listening to a service
+				let speech = 'I understand, I can talk people\'s ears off! Thank you!'
+				this.tell(speech);
+			},
+
+			//catching the 'dummy' question of "Do you want to hear more about our services?" Anything else except for no
+			Unhandled() {
+				let speech = '';
+				let reprompt = '';
+				
+				if(AboutAvatarsBeenHeard && AboutChatbotsBeenHeard && AboutVoiceAssistantsBeenHeard){
+					//will only be reached on reseting
+					speech = 'Would you like to hear about one of our services; AI Avatars, Voice Assistants or Chatbots? Or would you like to hear about our marvelous company or about me?';
+					reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
+					//all have been heard, reset
+					AboutAvatarsBeenHeard = false;
+					AboutChatbotsBeenHeard = false;
+					AboutVoiceAssistantsBeenHeard = false;
+				} else if (AboutAvatarsBeenHeard && !AboutChatbotsBeenHeard && !AboutVoiceAssistantsBeenHeard){
+					speech = 'Would you like to hear about one of our other services; Voice Assistants or Chatbots? Or would you like to hear about our marvelous company or about me?';
+					reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
+					
+				} else if (AboutAvatarsBeenHeard && AboutChatbotsBeenHeard && !AboutVoiceAssistantsBeenHeard){
+					speech = 'Would you like to hear about one of our other services; Voice Assistants? Or would you like to hear about our marvelous company or about me?';
+					reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
+					
+				} else if (AboutAvatarsBeenHeard && !AboutChatbotsBeenHeard && AboutVoiceAssistantsBeenHeard){
+					speech = 'Would you like to hear about one of our other awesome services; Chatbots? Or would you like to hear about our marvelous company or about me?';
+					reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
+					
+				} else if (!AboutAvatarsBeenHeard && AboutChatbotsBeenHeard && AboutVoiceAssistantsBeenHeard){
+					speech = 'Would you like to hear about one of our other awesome services; AI Avatars? Or would you like to hear about our marvelous company or about me?';
+					reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
+					
+				} else if (!AboutAvatarsBeenHeard && AboutChatbotsBeenHeard && !AboutVoiceAssistantsBeenHeard){
+					speech = 'Would you like to hear about one of our other awesome services; AI Avatars or Voice Assistants? Or would you like to hear about our marvelous company or about me?';
+					reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
+					
+				} else if (!AboutAvatarsBeenHeard && !AboutChatbotsBeenHeard && AboutVoiceAssistantsBeenHeard){
+					speech = 'Would you like to hear about one of our other awesome services; AI Avatars or Chatbots? Or would you like to hear about our marvelous company or about me?';
+					reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
+					
+				} else {	//Don't think this will ever be reached?
+					speech = 'ELSE CASE. Would you like to hear about one of our services; AI Avatars, Voice Assistants or Chatbots? Or would you like to hear about our marvelous company or about me?';
+					reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
+				}
+				
+				this.followUpState('MainMenuState.ServicesCabooseState').ask(speech, reprompt); 
+			
+			},
+		},
+//connecting state to give user all options in services, as well as some of those in main menu		
+		ServicesCabooseState: {
+			AvatarIntent() {
+				return this.toStateIntent('MainMenuState.ServicesSubMenuState', 'AvatarIntent');
+			},
+
+			VoiceAssistantIntent() {
+				return this.toStateIntent('MainMenuState.ServicesSubMenuState', 'VoiceAssistantIntent');
+			},
+
+			ChatbotIntent() {
+				return this.toStateIntent('MainMenuState.ServicesSubMenuState', 'ChatbotIntent');
+			},
+			
+			AboutLizIntent() {
+				return this.toStateIntent('MainMenuState', 'AboutLizIntent');
+			},
+			
+			AboutCompanyIntent() {
+				return this.toStateIntent('MainMenuState', 'AboutCompanyIntent');
+			},
+			
+			
+			
+		},
+		
 		
 //About Company with a sub menu, places user in submenu state, this is within MainMenuState
 		AboutCompanyIntent() {
@@ -330,7 +381,7 @@ app.setHandler({
 			}, 
 			//Repeat Intent, for when user asks for Liz to repeat herself in AboutCompanySubMenuState, sends user back to AboutCompanyIntent, to hear about company again, and then ask what to do next
 			RepeatIntent() {
-				return this.toStateIntent('MainMenuState', 'AboutCompanyIntent');
+				return this.repeat();
 			},
 		//Error-catching
 			Unhandled() {	//error catching specific for about company portion.
