@@ -90,7 +90,7 @@ app.setHandler({
 		},
 		
 		
-	}
+	},
 	//connection between IntroState and DigitalAssistantState (the intro part 2) also gathers user name, partly segmented for that reason	
 	IntroNameState: {		//issue with GetName intent, isolating it helps any mismatching errors
 		
