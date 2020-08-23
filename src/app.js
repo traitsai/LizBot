@@ -130,7 +130,7 @@ app.setHandler({
 		SiriIntent() {
 			let speech = 'Oh yes, Siri is really great! She was one of the very first digital assistants and holds a special place in many people\'s hearts!';
 			let reprompt = 'Isn\'t Siri the greatest!';
-			//this.followUpState('MainMenuState').ask(speech, reprompt); //goes to introNameState after asking for name of user
+			this.followUpState('MainMenuState').ask(speech, reprompt); //goes to introNameState after asking for name of user
 			return this.toStateIntent('MainMenuState', 'MainMenuIntroIntent');
 		},
 		
