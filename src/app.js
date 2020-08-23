@@ -77,9 +77,7 @@ app.setHandler({
 		},
 		
 		RepeatIntent() {
-			let speech = 'How are you today?';
-			let reprompt = 'How is your day?';
-			this.followUpState('IntroState').ask(speech, reprompt); //to cycle back, now that user has heard the question.
+			this.repeat(); //once enabled user context in config.js, we can simply use the repeat method to achieve the goal
 		},
 
 		Unhandled() {																																	
@@ -92,8 +90,8 @@ app.setHandler({
 		
 	},
 	//connection between IntroState and DigitalAssistantState (the intro part 2) also gathers user name, partly segmented for that reason	
-	IntroNameState: {		//issue with GetName intent, isolating it helps any mismatching errors
-		
+	IntroNameState: {
+
 		GetNameIntent() {		//can use user name elsewhere in copy, if desired.																															
 			let speech = 'It\'s nice to meet you ' + this.$inputs.name.value + '! Here at Traits AI we build digital assistants. I\'m curious about what you think about digital assistants, do you enjoy speaking with any other assistants besides Alexa like Siri, Google, or Bixby?';	//works now
 			let reprompt = 'Do you enjoy speaking with any other assistants besides Alexa like Siri, Google, or Bixby?';
@@ -101,6 +99,9 @@ app.setHandler({
 			this.followUpState('DigitalAssistantState').ask(speech, reprompt);
 		},
 
+		RepeatIntent() {
+			this.repeat();
+		},
 	},
 
 
@@ -117,20 +118,21 @@ app.setHandler({
 		},
 		
 		BixbyIntent() {
-			let speech = 'TODO';
-			let reprompt = 'TODO';
+			let speech = 'Great choice! Bixby is a powerful tool in automating commands to save SamSung users\' efforts.';
+			let reprompt = 'Bixby provides first-class experience to their users!';
 			this.followUpState('MainMenuState').ask(speech, reprompt); //to cycle back, asking again for a digital assistant
 		},
 		
 		SiriIntent() {
-			let speech = 'Oh yes, Siri is really great! She was one of the very first digital assistants and holds a special place in many people\'s hearts! People can be so fascinating to chat with! You know my name. What\'s your name?';
-			let reprompt = 'Isn\'t Siri the greatest! What\'s your name?';
+			let speech = 'Oh yes, Siri is really great! She was one of the very first digital assistants and holds a special place in many people\'s hearts!';
+			let reprompt = 'Isn\'t Siri the greatest!';
 			this.followUpState('MainMenuState').ask(speech, reprompt); //goes to introNameState after asking for name of user
+			//return this.toStateIntent('MainMenuState', 'MainMenuIntroIntent');
 		},
 		
 		GoogleAssistantIntent() {
-			let speech = 'Nice pick! Google Assistant is powerful in coordinating and collaborating with users to make the mundane more manageable. People can be so fascinating to chat with! You know my name. What\'s your name?';
-			let reprompt = 'Google\'s assisntant adds so much power to your fingertips! What\'s your name?';
+			let speech = 'Nice pick! Google Assistant is powerful in coordinating and collaborating with users to make the mundane more manageable.';
+			let reprompt = 'Google\'s assisntant adds so much power to your fingertips!';
 			this.followUpState('MainMenuState').ask(speech, reprompt); //goes to introNameState after asking for name of user
 		},
 		
@@ -143,22 +145,20 @@ app.setHandler({
 		NoIntent() {					
 			let speech = 'Oh, I hope you will enjoy speaking with me! Digital assistants may not be perfect but I always bring something to the table.?';
 			let reprompt = 'Oh, I hope you will enjoy speaking with me!';
-			this.followUpState('introNameState').ask(speech, reprompt);	//goes to introNameState after asking, taking no for an answer, asking for name of user
+			this.followUpState('MainMenuState').ask(speech, reprompt);	
 			
 		}, 
 		//This is to catch some potential responses of 'someone, someone else' and others at this time, we can add actual Virtual Assistant names to this invocation in the alexa dev. console also.
 		UnlistedAssistantIntent() {					
-			let speech = 'Oh! I wonder if there is some new competition around! People can be so fascinating and delightful to learn from and chat with! You know my name. What\'s your name?';
+			let speech = 'Oh! I wonder if there is some new competition around!';
 			let reprompt = 'I guess there might be a new Sheriff in town!';
-			this.followUpState('introNameState').ask(speech, reprompt);	//goes to introNameState after asking for name of user
+			this.followUpState('MainMenuState').ask(speech, reprompt);	
 			
 		}, 
 		
 //Repeat Intent, for when user asks for Liz to repeat the question in Intro		
 		RepeatIntent() {
-			let speech = 'I\'m curious if you have a favorite digital assistant. Do you have a favorite?';
-			let reprompt = 'Do you have a favorite?';
-			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, now that user has heard the question.
+			this.repeat();
 		},
 		
 //error catching for Intro State		
@@ -415,10 +415,9 @@ app.setHandler({
 		
 //Repeat Intent, for when user asks for Liz to repeat the question in the Main Menu	
 		RepeatIntent() {
-			let speech = 'Would you like to hear about our company, services, or I could tell you a little about me?';
-			let reprompt = 'Would you like to hear about our company, services, or little ol\' me?';
-			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, now that user has heard the question.
+			this.repeat();
 		},
+		
 //error catching for main menu	
 		Unhandled() {	
 			let speech = '';
