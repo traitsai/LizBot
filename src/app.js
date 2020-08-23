@@ -77,10 +77,7 @@ app.setHandler({
 		},
 		
 		RepeatIntent() {
-			/*let speech = 'How are you today?';
-			let reprompt = 'How is your day?';
-			this.followUpState('IntroState').ask(speech, reprompt); */
-			this.repeat();
+			this.repeat(); //once enabled user context in config.js, we can simply use the repeat method to achieve the goal
 		},
 
 		Unhandled() {																																	
@@ -103,9 +100,6 @@ app.setHandler({
 		},
 
 		RepeatIntent() {
-			/*let speech = 'Could I get your first name please?';
-			let reprompt = 'Could I get your first name please?';
-			this.followUpState('IntroNameState').ask(speech, reprompt); */
 			this.repeat();
 		},
 	},
@@ -164,9 +158,6 @@ app.setHandler({
 		
 //Repeat Intent, for when user asks for Liz to repeat the question in Intro		
 		RepeatIntent() {
-			/*let speech = 'I\'m curious if you have a favorite digital assistant. Do you have a favorite?';
-			let reprompt = 'Do you have a favorite?';
-			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, now that user has heard the question.*/
 			this.repeat();
 		},
 		
@@ -424,11 +415,9 @@ app.setHandler({
 		
 //Repeat Intent, for when user asks for Liz to repeat the question in the Main Menu	
 		RepeatIntent() {
-			/*let speech = 'Would you like to hear about our company, services, or I could tell you a little about me?';
-			let reprompt = 'Would you like to hear about our company, services, or little ol\' me?';
-			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, now that user has heard the question.*/
 			this.repeat();
 		},
+		
 //error catching for main menu	
 		Unhandled() {	
 			let speech = '';
