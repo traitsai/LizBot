@@ -101,6 +101,11 @@ app.setHandler({
 			this.followUpState('DigitalAssistantState').ask(speech, reprompt);
 		},
 
+		RepeatIntent() {
+			let speech = 'Could I get your first name please?';
+			let reprompt = 'Could I get your first name please?';
+			this.followUpState('IntroNameState').ask(speech, reprompt); 
+		},
 	},
 
 
