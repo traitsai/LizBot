@@ -103,9 +103,10 @@ app.setHandler({
 		},
 
 		RepeatIntent() {
-			let speech = 'Could I get your first name please?';
+			/*let speech = 'Could I get your first name please?';
 			let reprompt = 'Could I get your first name please?';
-			this.followUpState('IntroNameState').ask(speech, reprompt); 
+			this.followUpState('IntroNameState').ask(speech, reprompt); */
+			this.repeat();
 		},
 	},
 
@@ -163,9 +164,10 @@ app.setHandler({
 		
 //Repeat Intent, for when user asks for Liz to repeat the question in Intro		
 		RepeatIntent() {
-			let speech = 'I\'m curious if you have a favorite digital assistant. Do you have a favorite?';
+			/*let speech = 'I\'m curious if you have a favorite digital assistant. Do you have a favorite?';
 			let reprompt = 'Do you have a favorite?';
-			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, now that user has heard the question.
+			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, now that user has heard the question.*/
+			this.repeat();
 		},
 		
 //error catching for Intro State		
