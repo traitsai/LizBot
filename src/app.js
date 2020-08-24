@@ -117,27 +117,27 @@ app.setHandler({
 	DigitalAssistantState: {  		
 	
 		WhatDigitalAssistantIntent() {
-			let speech = 'What is a digital assistant? A digital assistant is an AI empowered persona that acts as a representative for a business!';
-			let reprompt = 'A digital assistant is an AI empowered persona that acts as a representative for a business!';
-			this.followUpState('DigitalAssistantState').ask(speech, reprompt); 
+			let speech = 'What is a digital assistant? A digital assistant is an AI empowered persona that acts as a representative for a business! Don\'t let me talk your ear off about how Traits AI can fashion a perfect and personalized AI Avatar for you! Would you like to hear about our company, services, or I could tell you a little about me?';
+			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?'';
+			this.followUpState('MainMenuState').ask(speech, reprompt); 
 		},
 		
 		BixbyIntent() {
-			let speech = 'Great choice! Bixby is a powerful tool in automating commands to save SamSung users\' efforts.';
-			let reprompt = 'Bixby provides first-class experience to their users!';
+			let speech = 'Great choice! Bixby is a powerful tool in automating commands to save SamSung users\' efforts. Don\'t let me talk your ear off about how Traits AI can fashion a perfect and personalized AI Avatar for you! Would you like to hear about our company, services, or I could tell you a little about me?';
+			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?'';
 			this.followUpState('MainMenuState').ask(speech, reprompt); //to cycle back, asking again for a digital assistant
 		},
 		
 		SiriIntent() {
-			let speech = 'Oh yes, Siri is really great! She was one of the very first digital assistants and holds a special place in many people\'s hearts!';
-			let reprompt = 'Isn\'t Siri the greatest!';
+			let speech = 'Oh yes, Siri is really great! She was one of the very first digital assistants and holds a special place in many people\'s hearts! Don\'t let me talk your ear off about how Traits AI can fashion a perfect and personalized AI Avatar for you! Would you like to hear about our company, services, or I could tell you a little about me?';
+			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?'';
 			this.followUpState('MainMenuState').ask(speech, reprompt); 
 			//return this.toStateIntent('MainMenuState', 'MainMenuIntroIntent');
 		},
 		
 		GoogleAssistantIntent() {
-			let speech = 'Nice pick! Google Assistant is powerful in coordinating and collaborating with users to make the mundane more manageable.';
-			let reprompt = 'Google\'s assisntant adds so much power to your fingertips!';
+			let speech = 'Nice pick! Google Assistant is powerful in coordinating and collaborating with users to make the mundane more manageable. Don\'t let me talk your ear off about how Traits AI can fashion a perfect and personalized AI Avatar for you! Would you like to hear about our company, services, or I could tell you a little about me?';
+			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?'';
 			this.followUpState('MainMenuState').ask(speech, reprompt); 
 		},
 		
@@ -148,15 +148,15 @@ app.setHandler({
 		},
 		
 		NoIntent() {					
-			let speech = 'Oh, I hope you will enjoy speaking with me! Digital assistants may not be perfect but I always bring something to the table.?';
-			let reprompt = 'Oh, I hope you will enjoy speaking with me!';
+			let speech = 'Oh, I hope you will enjoy speaking with me! Digital assistants may not be perfect but I always bring something to the table. Don\'t let me talk your ear off about how Traits AI can fashion a perfect and personalized AI Avatar for you! Would you like to hear about our company, services, or I could tell you a little about me?';
+			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?'';
 			this.followUpState('MainMenuState').ask(speech, reprompt);	
 			
 		}, 
 		//This is to catch some potential responses of 'someone, someone else' and others at this time, we can add actual Virtual Assistant names to this invocation in the alexa dev. console also.
 		UnlistedAssistantIntent() {					
-			let speech = 'Oh! I wonder if there is some new competition around!';
-			let reprompt = 'I guess there might be a new Sheriff in town!';
+			let speech = 'Oh! I wonder if there is some new competition around! Would you like to hear about our company, services, or I could tell you a little about me?';
+			let reprompt = 'I guess there might be a new Sheriff in town! Would you like to hear about our company, services, or I could tell you a little about me?';
 			this.followUpState('MainMenuState').ask(speech, reprompt);	
 			
 		}, 
@@ -166,7 +166,7 @@ app.setHandler({
 			this.repeat();
 		},
 		
-//error catching for Intro State		
+//error catching for DigitalAssistantState		
 		Unhandled() {	//this will catch RandomIntent, and any other undefined Intents
 			let speech = '';
 			//var errorResponseCounterIntro = Math.floor(Math.random() * 5);		//for random if wanted
@@ -198,7 +198,7 @@ app.setHandler({
 			
 		},
 			
-	},
+	}, //end digital assistant state
 
 
 //Main Menu State, the largest, most major state.	
@@ -243,7 +243,7 @@ app.setHandler({
 				this.followUpState('MainMenuState.ServicesExitingState').ask(speech,reprompt);	
 			},
 		//Error-catching
-			Unhandled() {	//error catching specific for services portion.
+			Unhandled() {	//error catching specific for services submenu portion.
 				let speech = '';
 
 				switch(errorResponseCounterServices){
@@ -271,7 +271,9 @@ app.setHandler({
 			
 			},
 		},
-			
+		
+//State to ask user which service to hear about next, routing through logic so only services you have not heard yet are listed, until all are heard and it resets. 
+//Connects to ServicesCabooseState to give more options than are available in ServicesSubmenu
 		ServicesExitingState: {
 			NoIntent() {		//user says No to hear more about company or services at the end of listening to a service
 				let speech = 'I understand, I can talk people\'s ears off! Thank you!'
@@ -324,8 +326,9 @@ app.setHandler({
 			
 			},
 		},
-//connecting state to give user all options in services, as well as some of those in main menu		
+//connecting state to give user all options in services, as well as some of those in main menu, routing user back through the various parts of the main menu or main submenus	
 		ServicesCabooseState: {
+										//Maybe add error catching here some how?
 			AvatarIntent() {
 				return this.toStateIntent('MainMenuState.ServicesSubMenuState', 'AvatarIntent');
 			},
@@ -346,7 +349,12 @@ app.setHandler({
 				return this.toStateIntent('MainMenuState', 'AboutCompanyIntent');
 			},
 			
-			
+			//basic error catching for the moment
+			Unhandled() {
+				let speech = 'Would you like to hear about one of our services; AI Avatars, Voice Assistants or Chatbots? Or would you like to hear about our marvelous company or about me?';
+				let reprompt = 'WWould you like to hear about one of our services; AI Avatars, Voice Assistants or Chatbots? Or would you like to hear about our marvelous company or about little ol\' me?';
+				this.followUpState('MainMenuState.ServicesCabooseState').ask(speech, reprompt); 
+			},
 			
 		},
 		
@@ -367,7 +375,6 @@ app.setHandler({
 				//let speech = 'Traits AI is all about human-centered AI. We build AI that works in collaboration with humans with the purpose of augmenting and empowering people, rather than replacing people. We tap into the cognitive power of the crowd to keep humans in the loop and enable Human Centered AI.';
 				let reprompt = 'Would you like to hear about our company? or our services we passionately provide?';
 
-
 				this.followUpState('MainMenuState.AboutCompanySubMenuState').ask(speech,reprompt);
 				
 			}, 
@@ -384,7 +391,7 @@ app.setHandler({
 				return this.repeat();
 			},
 		//Error-catching
-			Unhandled() {	//error catching specific for about company portion.
+			Unhandled() {	//error catching specific for about company submenu portion.
 				let speech = '';
 				switch(errorResponseCounterCompanySubMenu){
 					case 0:
@@ -434,7 +441,7 @@ app.setHandler({
 				return this.toStateIntent('MainMenuState', 'AboutLizIntent');
 			},
 		//Error-catching 
-			Unhandled() {	//error catching specific for about company portion.
+			Unhandled() {	//error catching specific for about liz submenu portion.
 				let speech = '';
 
 				switch(errorResponseCounterLizSubMenu){
