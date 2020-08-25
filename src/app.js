@@ -118,26 +118,25 @@ app.setHandler({
 	
 		WhatDigitalAssistantIntent() {
 			let speech = 'What is a digital assistant? A digital assistant is an AI empowered persona that acts as a representative for a business! Don\'t let me talk your ear off about how Traits AI can fashion a perfect and personalized AI Avatar for you! Would you like to hear about our company, services, or I could tell you a little about me?';
-			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?'';
+			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
 			this.followUpState('MainMenuState').ask(speech, reprompt); 
 		},
 		
 		BixbyIntent() {
 			let speech = 'Great choice! Bixby is a powerful tool in automating commands to save SamSung users\' efforts. Don\'t let me talk your ear off about how Traits AI can fashion a perfect and personalized AI Avatar for you! Would you like to hear about our company, services, or I could tell you a little about me?';
-			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?'';
+			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
 			this.followUpState('MainMenuState').ask(speech, reprompt); //to cycle back, asking again for a digital assistant
 		},
 		
 		SiriIntent() {
 			let speech = 'Oh yes, Siri is really great! She was one of the very first digital assistants and holds a special place in many people\'s hearts! Don\'t let me talk your ear off about how Traits AI can fashion a perfect and personalized AI Avatar for you! Would you like to hear about our company, services, or I could tell you a little about me?';
-			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?'';
+			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
 			this.followUpState('MainMenuState').ask(speech, reprompt); 
-			//return this.toStateIntent('MainMenuState', 'MainMenuIntroIntent');
 		},
 		
 		GoogleAssistantIntent() {
 			let speech = 'Nice pick! Google Assistant is powerful in coordinating and collaborating with users to make the mundane more manageable. Don\'t let me talk your ear off about how Traits AI can fashion a perfect and personalized AI Avatar for you! Would you like to hear about our company, services, or I could tell you a little about me?';
-			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?'';
+			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
 			this.followUpState('MainMenuState').ask(speech, reprompt); 
 		},
 		
@@ -149,7 +148,7 @@ app.setHandler({
 		
 		NoIntent() {					
 			let speech = 'Oh, I hope you will enjoy speaking with me! Digital assistants may not be perfect but I always bring something to the table. Don\'t let me talk your ear off about how Traits AI can fashion a perfect and personalized AI Avatar for you! Would you like to hear about our company, services, or I could tell you a little about me?';
-			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?'';
+			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
 			this.followUpState('MainMenuState').ask(speech, reprompt);	
 			
 		}, 
@@ -173,7 +172,7 @@ app.setHandler({
 
 			switch(errorResponseCounterIntro){
 				case 0:
-					speech = 'My bad, I was distracted by my dog Lulu, and didn\'t quite catch what you just said. I was expecting you to tell me your favorite digital assistant like Siri, Alexa, or Google Assistant. Or if you don\'t have one say I don\'t have one.';
+					speech = 'My bad, I didn\'t quite catch what you just said. I was expecting you to tell me your favorite digital assistant like Siri, Bixby, or Google Assistant. Or if you don\'t have one say I don\'t have one.';
 					break;
 				case 1:
 					speech = 'I am very sorry, I didn\'t quite understand that. Lulu was making a ruckus, can you name your favorite digital assistant please? You can always say no if you don\'t have one.';
@@ -185,7 +184,7 @@ app.setHandler({
 					speech = 'I apologize, I live on a lake, and my dog Lulu just came back all wet to her delight! Who\'s your favorite digital assistant again?';
 					break;
 				case 4:
-					speech = 'I\'m so sorry, Lulu just tried to dig a hole in my potted plant. What\'s the name of your favorite digital assistant again? Was it Siri, Alexa or google assistant? You can say no if they are not the one.';
+					speech = 'I\'m so sorry, Lulu just tried to dig a hole in my potted plant. What\'s the name of your favorite digital assistant again? Was it Siri, Bixby or google assistant? You can say no if they are not the one.';
 					errorResponseCounterIntro = -1;		//needed to be able to reach case 0 at all... weird bug
 					break;
 				default:
@@ -193,7 +192,7 @@ app.setHandler({
 					break;
 			} 
 			errorResponseCounterIntro++;
-			let reprompt = 'Is it Siri, Google Assistant, Alexa or someone else?';
+			let reprompt = 'Is it Siri, Google Assistant, Bixby or someone else?';
 			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, as we would want to if they say an unassigned intent
 			
 		},
@@ -203,12 +202,6 @@ app.setHandler({
 
 //Main Menu State, the largest, most major state.	
 	MainMenuState: {
-		//this intent is only reached and fires off when moving from the intro to the main menu, otherwise the user can never reach this.
-		MainMenuIntroIntent() {		//maybe reduce this copy here? I don't think the text in the reprompt will be reached for a bit, so we need to say that(instructions) here as well.
-			let speech = 'I feel a little spark of understanding emanating from you! It has been great speaking with you so far, people can be so fascinating! Don\'t get me started and talk your ear off about how Traits AI can fashion a perfect and personalized AI Avatar for you and your company! Would you like to hear about our company, services, or I could tell you a little about me?';
-			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
-			this.followUpState('MainMenuState').ask(speech,reprompt);
-		},	
 		
 //AI Services with a sub menu, places user in submenu state after prompting
 		AIServicesIntent() {
