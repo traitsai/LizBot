@@ -102,7 +102,7 @@ app.setHandler({
 	IntroNameState: {
 
 		GetNameIntent() {		//can use user name elsewhere in copy, if desired.																															
-			let speech = 'It\'s nice to meet you ' + this.$inputs.name.value + '! Here at Traits AI we build digital assistants. I\'m curious about what you think about digital assistants, do you enjoy speaking with any other assistants besides Alexa like Siri, Google, or Bixby?';	//works now
+			let speech = this.speechBuilder().addText('It\'s nice to meet you ' + this.$inputs.name.value + '! Here at Traits AI we build digital assistants.').addBreak('300ms').addText('I\'m curious about what you think about digital assistants, do you enjoy speaking with any other assistants besides Alexa like Siri, Google, or Bixby?');	
 			let reprompt = 'Do you enjoy speaking with any other assistants besides Alexa like Siri, Google, or Bixby?';
 			
 			this.followUpState('DigitalAssistantState').ask(speech, reprompt);
