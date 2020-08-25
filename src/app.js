@@ -202,8 +202,13 @@ app.setHandler({
 
 //Main Menu State, the largest, most major state.	
 	MainMenuState: {
-		
-//AI Services with a sub menu, places user in submenu state after prompting
+		//end the session when user say no to hear more about any services
+		NoIntent() {
+			let speech = 'Sure, we can talk later when you are interested.';
+			this.tell(speech);
+		},
+
+		//AI Services with a sub menu, places user in submenu state after prompting
 		AIServicesIntent() {
 			let speech = 'We have many marvelous services here at Traits AI. We have advanced AI Avatars, powerful Voice Assistants, and competitive, business-forward Chatbots. Which of those three would you like to hear about?';
 			let reprompt = 'You can say Avatar, Voice assistant or Chatbot.';
