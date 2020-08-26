@@ -202,7 +202,7 @@ app.setHandler({
 
 //Main Menu State, the largest, most major state.	
 	MainMenuState: {
-		//end the session when user say no to hear more about any services
+		//end the session when user say no to hear more about any services                   - Should this be a quit intent or something? will the user say No if they want to end session?
 		NoIntent() {
 			let speech = 'Sure, we can talk later when you are interested.';
 			this.tell(speech);
