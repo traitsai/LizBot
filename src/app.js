@@ -111,6 +111,13 @@ app.setHandler({
 		RepeatIntent() {
 			this.repeat();
 		},
+
+		Unhandled() {																																	
+			let speech = 'Could I get your first name please?';
+			let reprompt = 'Could I get your first name please?';
+			
+			this.followUpState('IntroNameState').ask(speech, reprompt);
+		},
 	},
 
 
