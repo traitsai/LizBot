@@ -11,7 +11,7 @@ const { FileDb } = require('jovo-db-filedb');
 // ------------------------------------------------------------------
 
 const app = new App();
-var errorResponseCounterIntro = 0; //counter for default error handling reponses, will cycle through them, then reset at the end
+var errorResponseCounterIntro = -1; //counter for default error handling reponses, will cycle through them, then reset at the end
 var errorResponseCounterMainMenu = 0; //counter for error handling in main menu, will reset at the end of the cycle
 var errorResponseCounterServices = 0; //counter for error handling in main menu sub menu, services, resets at end of the cycle
 var connectingToMainStatementCounter = 0; //counter for ConnectionFromIntroToMainState, to first do one message, then another.
