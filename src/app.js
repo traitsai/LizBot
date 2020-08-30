@@ -11,7 +11,11 @@ const { FileDb } = require('jovo-db-filedb');
 // ------------------------------------------------------------------
 
 const app = new App();
-var errorResponseCounterIntro = -1; //counter for default error handling reponses, will cycle through them, then reset at the end
+
+//so we cannot just set this to -1, because it will always reach the default case in the switch statement the first time, which we do not want, I think it is better to potentially skip 
+//the first error-catching, rather than reach the default statement.
+
+var errorResponseCounterDigitalAssistant = 0; //counter for default error handling reponses, will cycle through them, then reset at the end
 var errorResponseCounterMainMenu = 0; //counter for error handling in main menu, will reset at the end of the cycle
 var errorResponseCounterServices = 0; //counter for error handling in main menu sub menu, services, resets at end of the cycle
 var connectingToMainStatementCounter = 0; //counter for ConnectionFromIntroToMainState, to first do one message, then another.
@@ -50,16 +54,11 @@ app.setHandler({
 	
 	}, */
 	
-	
-	//initial portion of intro flow on miro, has error catching for nonimplemented commands, 
-	//the intents within either cycle back to the start, asking for your favorite assistant, or if you give a 'no' or the assistant's name, it responds with 
-	//some copy and then links to the getName intent, which gets the user's name, says it back to them, and then links to ConnectionFromIntroToMainState, which responds to the previous dummy question 
-	//from the GetNameIntent and then prompts another one, linking ConnectionFromIntroToMainState to the Main Menu State. Perhaps we could remove a dummy question? You cannot ask 2 seperate questions 
-	//within one state. It expects a user response after .ask() method to match to an Intent. - THIS IS GETTING REVAMPED
+
 	
 	
 	IntroState: {
-				//TO BE REMOVED?
+				//TO BE REMOVED? - testing intent
 		MainMenuIntent() {			//used for testing main menu, to skip intro messages, 'skip, main menu' this command is not told to user at this point, maybe remove at the end of development?
 			return this.toStateIntent('MainMenuState', 'MainMenuIntroIntent');
 		},
@@ -101,6 +100,7 @@ app.setHandler({
 	//connection between IntroState and DigitalAssistantState (the intro part 2) also gathers user name, partly segmented for that reason	
 	IntroNameState: {
 
+		
 		GetNameIntent() {		//can use user name elsewhere in copy, if desired.																															
 			let speech = this.speechBuilder().addText('It\'s nice to meet you ' + this.$inputs.name.value + '! Here at Traits AI we build digital assistants.').addBreak('300ms').addText('I\'m curious about what you think about digital assistants, do you enjoy speaking with any other assistants besides Alexa like Siri, Google, or Bixby?');	
 			let reprompt = 'Do you enjoy speaking with any other assistants besides Alexa like Siri, Google, or Bixby?';
@@ -108,16 +108,17 @@ app.setHandler({
 			this.followUpState('DigitalAssistantState').ask(speech, reprompt);
 		},
 
+		
 		RepeatIntent() {
 			this.repeat();
 		},
-
+		
 		Unhandled() {																																	
-			let speech = 'Could I get your first name please?';
+			let speech = 'Could I get your first name please?';			
 			let reprompt = 'Could I get your first name please?';
 			
 			this.followUpState('IntroNameState').ask(speech, reprompt);
-		},
+		}, 
 	},
 
 
@@ -173,11 +174,10 @@ app.setHandler({
 		},
 		
 //error catching for DigitalAssistantState		
-		Unhandled() {	//this will catch RandomIntent, and any other undefined Intents
+		Unhandled() {	
 			let speech = '';
-			//var errorResponseCounterIntro = Math.floor(Math.random() * 5);		//for random if wanted
 
-			switch(errorResponseCounterIntro){
+			switch(errorResponseCounterDigitalAssistant){
 				case 0:
 					speech = 'My bad, I didn\'t quite catch what you just said. I was expecting you to tell me your favorite digital assistant like Siri, Bixby, or Google Assistant. Or if you don\'t have one say I don\'t have one.';
 					break;
@@ -192,13 +192,13 @@ app.setHandler({
 					break;
 				case 4:
 					speech = 'I\'m so sorry, Lulu just tried to dig a hole in my potted plant. What\'s the name of your favorite digital assistant again? Was it Siri, Bixby or google assistant? You can say no if they are not the one.';
-					errorResponseCounterIntro = -1;		//needed to be able to reach case 0 at all... weird bug
+					errorResponseCounterDigitalAssistant = -1;		//needed to be able to reach case 0 at all... weird bug
 					break;
 				default:
-					speech = 'end and counter is: ' + errorResponseCounterIntro;	//internal error catching, shouldnt be reached by user
+					speech = 'end and counter is: ' + errorResponseCounterDigitalAssistant;	//internal error catching, shouldnt be reached by user
 					break;
 			} 
-			errorResponseCounterIntro++;
+			errorResponseCounterDigitalAssistant++;
 			let reprompt = 'Is it Siri, Google Assistant, Bixby or someone else?';
 			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, as we would want to if they say an unassigned intent
 			
@@ -280,10 +280,13 @@ app.setHandler({
 //State to ask user which service to hear about next, routing through logic so only services you have not heard yet are listed, until all are heard and it resets. 
 //Connects to ServicesCabooseState to give more options than are available in ServicesSubmenu
 		ServicesExitingState: {
+			
+			
 			NoIntent() {		//user says No to hear more about company or services at the end of listening to a service
-				let speech = 'I understand, I can talk people\'s ears off! Thank you!'
-				this.tell(speech);
-			},
+				let speech = 'Would you like to hear about our Company or about me?'
+				let reprompt = 'Would you like to hear about me or our company?';
+				this.followUpState('MainMenuState.ServicesCabooseState').ask(speech, reprompt); 
+			}, 
 
 			//catching the 'dummy' question of "Do you want to hear more about our services?" Anything else except for no
 			Unhandled() {
@@ -333,7 +336,12 @@ app.setHandler({
 		},
 //connecting state to give user all options in services, as well as some of those in main menu, routing user back through the various parts of the main menu or main submenus	
 		ServicesCabooseState: {
-										//Maybe add error catching here some how?
+			
+			NoIntent() {
+				let speech = 'Sure, we can talk later when you are interested! Thanks for talking with me!';
+				this.tell(speech);
+			},
+								
 			AvatarIntent() {
 				return this.toStateIntent('MainMenuState.ServicesSubMenuState', 'AvatarIntent');
 			},
