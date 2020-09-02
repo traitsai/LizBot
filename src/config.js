@@ -7,7 +7,8 @@ module.exports = {
 
   intentMap: {
     'AMAZON.StopIntent': 'END',
-	'AMAZON.FallbackIntent' : 'Unhandled'
+  'AMAZON.FallbackIntent' : 'Unhandled',
+  'AMAZON.RepeatIntent' : 'RepeatIntent',
 	
 	
   },
