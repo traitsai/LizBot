@@ -112,10 +112,10 @@ app.setHandler({
 
 		
 		RepeatIntent() {
-			/*let speech = 'Could I get your first name please?';
+			let speech = 'Could I get your first name please?';
 			let reprompt = 'Could I get your first name please?';
-			this.followUpState('IntroNameState').ask(speech, reprompt); */
-			this.repeat();
+			this.followUpState('IntroNameState').ask(speech, reprompt); 
+			//this.repeat();
 		},
 		
 		Unhandled() {																																	
@@ -177,10 +177,10 @@ app.setHandler({
 		
 //Repeat Intent, for when user asks for Liz to repeat the question in Intro		
 		RepeatIntent() {
-			/*let speech = 'I\'m curious if you have a favorite digital assistant. Do you have a favorite?';
+			let speech = 'I\'m curious if you have a favorite digital assistant. Do you have a favorite?';
 			let reprompt = 'Do you have a favorite?';
-			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, now that user has heard the question.*/
-			this.repeat();
+			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, now that user has heard the question.
+			//this.repeat();
 		},
 		
 //error catching for DigitalAssistantState		
@@ -411,7 +411,11 @@ app.setHandler({
 			}, 
 			//Repeat Intent, for when user asks for Liz to repeat herself in AboutCompanySubMenuState, sends user back to AboutCompanyIntent, to hear about company again, and then ask what to do next
 			RepeatIntent() {
-				return this.repeat();
+				let speech = 'Traits AI is all about human-centered AI. We build AI that works in collaboration with humans with the purpose of augmenting and empowering people, rather than replacing people. We tap into the cognitive power of the crowd to keep humans in the loop and enable Human Centered AI. Now you know about our stalwart values, would you like to hear about me or our services we provide?';
+				//let speech = 'Traits AI is all about human-centered AI. We build AI that works in collaboration with humans with the purpose of augmenting and empowering people, rather than replacing people. We tap into the cognitive power of the crowd to keep humans in the loop and enable Human Centered AI.';
+				let reprompt = 'Would you like to hear about our company? or our services we passionately provide?';
+
+				this.followUpState('MainMenuState.AboutCompanySubMenuState').ask(speech,reprompt);
 			},
 		//Error-catching
 			Unhandled() {	//error catching specific for about company submenu portion.
