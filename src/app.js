@@ -85,10 +85,9 @@ app.setHandler({
 		},
 		
 		RepeatIntent() {
-			/*let speech = 'How are you today?';
+			let speech = 'How are you today?';
 			let reprompt = 'How is your day?';
-			this.followUpState('IntroState').ask(speech, reprompt); */
-			this.repeat();
+			this.followUpState('IntroState').ask(speech, reprompt); 
 		},
 
 		Unhandled() {																																	
@@ -143,9 +142,11 @@ app.setHandler({
 		},
 		
 		SiriIntent() {
+
 			let speech = 'Oh yes, Siri is really great! She was one of the very first digital assistants and holds a special place in many people\'s hearts! Don\'t let me talk your ear off about how Traits AI can fashion a perfect and personalized AI Avatar for you! Would you like to hear about our company, services, or I could tell you a little about me?';
 			let reprompt = 'Would you like to hear about our company, services, or I could tell you a little about me?';
 			this.followUpState('MainMenuState').ask(speech, reprompt); 
+
 		},
 		
 		GoogleAssistantIntent() {
@@ -495,10 +496,9 @@ app.setHandler({
 		
 //Repeat Intent, for when user asks for Liz to repeat the question in the Main Menu	
 		RepeatIntent() {
-			/*let speech = 'Would you like to hear about our company, services, or I could tell you a little about me?';
+			let speech = 'Would you like to hear about our company, services, or I could tell you a little about me?';
 			let reprompt = 'Would you like to hear about our company, services, or little ol\' me?';
-			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, now that user has heard the question.*/
-			this.repeat();
+			this.followUpState('DigitalAssistantState').ask(speech, reprompt); //to cycle back, now that user has heard the question.
 		},
 //error catching for main menu	
 		Unhandled() {	
