@@ -40,7 +40,7 @@ app.use(
 app.setHandler({
 	
   LAUNCH() {
-        let speech = 'Hello there! My name is Elizabeth, but you can call me Liz for short! I work at Traits AI as a digital assistant. How are you today?';
+        let speech = 'Hello there! My name is Elizabeth, but you can call me Liz for short! I work at Traits AI as a  digital assistant. How are you today?';
         let reprompt = 'How is your day?';
 		this.followUpState('IntroState').ask(speech, reprompt);
     },
