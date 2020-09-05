@@ -13,11 +13,11 @@ module.exports = {
 	
   },
 
-	db: {
+  db: {
         DynamoDb: {
             tableName: 'LizTable',
         }
-    }
+  }
 	/*
   db: {
     FileDb: {
