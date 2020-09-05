@@ -139,7 +139,8 @@ exports.handler = Alexa.SkillBuilders.custom()
     .lambda();
 
 
-// AWS Lambda
+/*AWS Lambda
 exports.handler = async (event, context, callback) => {
   await app.handle(new Lambda(event, context, callback));
 };
+*/
