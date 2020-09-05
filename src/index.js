@@ -137,7 +137,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         ErrorHandler,
     )
     .lambda();
-
+//end security by Alexa
 
 /*AWS Lambda
 exports.handler = async (event, context, callback) => {
