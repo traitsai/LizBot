@@ -13,11 +13,18 @@ module.exports = {
 	
   },
 
+	db: {
+        DynamoDb: {
+            tableName: 'LizTable',
+        }
+    }
+	/*
   db: {
     FileDb: {
       pathToFile: '../db/db.json',
     },
   },
+  */
 
   user: {
     context: {
