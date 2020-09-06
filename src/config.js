@@ -7,25 +7,26 @@ module.exports = {
 
   intentMap: {
     'AMAZON.StopIntent': 'END',
-  'AMAZON.FallbackIntent' : 'Unhandled',
-  'AMAZON.RepeatIntent' : 'RepeatIntent',
+    'AMAZON.FallbackIntent' : 'Unhandled',
+    'AMAZON.RepeatIntent' : 'RepeatIntent',
 	
 	
   },
+/*
 
   db: {
         DynamoDb: {
             tableName: 'LizTable',
         }
   }
-	/*
+	*/
+
   db: {
     FileDb: {
       pathToFile: '../db/db.json',
     },
   },
- */
- 
+
   user: {
     context: {
         enabled: true,
