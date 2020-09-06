@@ -4,7 +4,7 @@ const { WebhookVerified: Webhook, ExpressJS } = require('jovo-framework');
 const { app } = require('./app.js');
 
 
- ExpressJS (Jovo Webhook)
+ //ExpressJS (Jovo Webhook)
 if (process.argv.indexOf('--webhook') > -1) {
   const port = process.env.JOVO_PORT || 3000;
   Webhook.jovoApp = app;
