@@ -9,7 +9,6 @@
     "ask-sdk": "^2.9.0",
     "ask-sdk-core": "^2.9.0",
     "ask-sdk-express-adapter": "^2.1.0",
-    "dynamodb": "^1.2.1",
     "jovo-core": "^3.0.21",
     "jovo-db-dynamodb": "^3.0.22",
     "jovo-db-filedb": "^3.0.22",
