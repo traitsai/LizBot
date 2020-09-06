@@ -45,23 +45,9 @@ app.setHandler({
 		this.followUpState('IntroState').ask(speech, reprompt);
     },
 	
-	/*
-	Unhandled() {									//Global unhandled intent, not implemented at this time, we deal with it individually within the intents
-			let speech = 'unhandled intent reached';
-			let reprompt = 'Is it Siri, Google Assistant, Alexa or someone else?';
-			
-			this.ask(speech, reprompt);
 	
-	}, */
-	
-
-	
-	
+//first state after launching	
 	IntroState: {
-				//TO BE REMOVED? - testing intent
-		MainMenuIntent() {			//used for testing main menu, to skip intro messages, 'skip, main menu' this command is not told to user at this point, maybe remove at the end of development?
-			return this.toStateIntent('MainMenuState', 'MainMenuIntroIntent');
-		},
 		
 		GoodIntent() {																																	
 			let speech = 'I\'m happy to hear that. Before we get started, could I get your first name?';
@@ -99,7 +85,6 @@ app.setHandler({
 	},
 	//connection between IntroState and DigitalAssistantState (the intro part 2) also gathers user name, partly segmented for that reason	
 	IntroNameState: {
-
 		
 		GetNameIntent() {		//can use user name elsewhere in copy, if desired.																															
 			let speech = this.speechBuilder().addText('It\'s nice to meet you ' + this.$inputs.name.value + '! Here at Traits AI we build digital assistants.').addBreak('300ms').addText('I\'m curious about what you think about digital assistants, do you enjoy speaking with any other assistants besides Alexa like Siri, Google, or Bixby?');	
