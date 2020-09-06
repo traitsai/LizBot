@@ -19,7 +19,7 @@ if (process.argv.indexOf('--webhook') > -1) {
 }
 
 
-//default security from Alexa
+/*default security from Alexa
 const Alexa = require('ask-sdk-core');
 
 const LaunchRequestHandler = {
@@ -137,7 +137,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         ErrorHandler,
     )
     .lambda();
-//end security by Alexa
+/*end security by Alexa
 
 /*AWS Lambda
 exports.handler = async (event, context, callback) => {
