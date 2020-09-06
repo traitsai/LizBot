@@ -28,15 +28,15 @@ var AboutChatbotsBeenHeard = false;
 
 // app.js
 ​
-const { DynamoDb } = require('jovo-db-dynamodb');
+//const { DynamoDb } = require('jovo-db-dynamodb');
 ​
 
 app.use(
   new Alexa(),
   new GoogleAssistant(),
   new JovoDebugger(),
-  new FileDb(),
-  new DynamoDb()
+  new FileDb()
+  //new DynamoDb()
 );
 
 // ------------------------------------------------------------------
