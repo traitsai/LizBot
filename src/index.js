@@ -4,7 +4,8 @@ const { WebhookVerified: Webhook, ExpressJS } = require('jovo-framework');
 const { app } = require('./app.js');
 
 
- //ExpressJS (Jovo Webhook)
+
+//ExpressJS (Jovo Webhook)
 if (process.argv.indexOf('--webhook') > -1) {
   const port = process.env.JOVO_PORT || 3000;
   Webhook.jovoApp = app;
@@ -19,21 +20,50 @@ if (process.argv.indexOf('--webhook') > -1) {
 }
 
 
-/*default security from Alexa
+
+//default security from Alexa
 const Alexa = require('ask-sdk-core');
 
-const LaunchRequestHandler = {
+const LaunchRequestHandler = {				
+	
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     handle(handlerInput) {
-        const speakOutput = 'Welcome, you can say Hello or Help. Which would you like to try?';
+	   //let speech = 'Hello there! My name is Elizabeth, but you can call me Liz for short! I work at Traits AI as a digital assistant. How are you today?';	//potentially we could move all code into here? This validates
+       //let reprompt = 'How is your day?';
+
+        const speakOutput = 'Hello there! My name is Elizabeth, but you can call me Liz for short! I work at Traits AI as a digital assistant. How are you today?'; //this works, can change stuff here
+		
+        return handlerInput.responseBuilder
+              .speak(speakOutput)
+              .reprompt(speakOutput)
+              .getResponse(); 
+		//app.followUpState('IntroState').ask(speech, reprompt);		
+			
+    }
+};
+
+//testing intent handlers, this works after, we would need to add states and everything over to here
+/*
+const GoodIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest' && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GoodIntent';
+    },
+    handle(handlerInput) {
+        
+        const speakOutput = 'I\'m happy to hear that. Before we get started, could I get your first name?';
+
         return handlerInput.responseBuilder
             .speak(speakOutput)
-            .reprompt(speakOutput)
+            .reprompt('I\'m so pleased to hear that. Could I get your first name please?')
             .getResponse();
     }
 };
+*/
+
+//    Dont think we need this intent handler regardless
+/*
 const HelloWorldIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -46,7 +76,8 @@ const HelloWorldIntentHandler = {
             //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
             .getResponse();
     }
-};
+}; 
+*/
 const HelpIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -127,20 +158,25 @@ const ErrorHandler = {
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
-        HelloWorldIntentHandler,
+        //HelloWorldIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
         SessionEndedRequestHandler,
+		//GoodIntentHandler,
         IntentReflectorHandler, // make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
     )
     .addErrorHandlers(
         ErrorHandler,
     )
     .lambda();
-/*end security by Alexa
+//end security by Alexa
 
-/*AWS Lambda
-exports.handler = async (event, context, callback) => {
-  await app.handle(new Lambda(event, context, callback));
+
+
+/*
+//AWS Lambda
+exports.handler = async (event, context, callback) => {					//trying stuff - doesnt help
+	const lambda = new Lambda(event, context, callback);				
+	await app.handle(lambda);
 };
 */
