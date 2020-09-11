@@ -271,10 +271,6 @@ app.setHandler({
 				this.followUpState('MainMenuState.ServicesSubMenuState').ask(speech, reprompt); //to cycle back, as we would want to if they say an unassigned intent
 			
 			},
-
-			'AMAZON.CancelIntent'() {
-				this.tell('See you next time!');
-			},
 		},
 		
 //State to ask user which service to hear about next, routing through logic so only services you have not heard yet are listed, until all are heard and it resets. 
@@ -332,10 +328,6 @@ app.setHandler({
 				
 				this.followUpState('MainMenuState.ServicesCabooseState').ask(speech, reprompt); 
 			
-			},
-
-			'AMAZON.CancelIntent'() {
-				this.tell('See you next time!');
 			},
 		},
 //connecting state to give user all options in services, as well as some of those in main menu, routing user back through the various parts of the main menu or main submenus	
@@ -521,6 +513,9 @@ app.setHandler({
 			this.followUpState('MainMenuState').ask(speech, reprompt); //to cycle back, as we would want to if they say an unassigned intent
 		},
 	
+		'AMAZON.CancelIntent'() {
+			this.tell('See you next time!');
+		},
 	
 	}, //End MainMenuState here
 
