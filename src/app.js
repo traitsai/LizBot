@@ -81,7 +81,7 @@ app.setHandler({
 			this.followUpState('IntroNameState').ask(speech, reprompt);
 		},
 		
-		'AMAZON.CancelIntent'() {
+		CancelIntent() {
 			this.tell('Sure, we can talk later!');
 		},
 		
@@ -108,7 +108,7 @@ app.setHandler({
 			this.followUpState('IntroNameState').ask(speech, reprompt);
 		}, 
 
-		'AMAZON.CancelIntent'() {
+		CancelIntent() {
 			this.tell('Sure, we can talk later!');
 		},
 	},
@@ -196,7 +196,7 @@ app.setHandler({
 			
 		},
 
-		'AMAZON.CancelIntent'() {
+		CancelIntent() {
 			this.tell('Sure, we can talk later!');
 		},
 			
@@ -272,7 +272,7 @@ app.setHandler({
 			
 			},
 
-			'AMAZON.CancelIntent'() {
+			CancelIntent() {
 				this.tell('Sure, we can talk later!');
 			},
 		},
@@ -334,7 +334,7 @@ app.setHandler({
 			
 			},
 
-			'AMAZON.CancelIntent'() {
+			CancelIntent() {
 				this.tell('Sure, we can talk later!');
 			},
 		},
@@ -373,7 +373,7 @@ app.setHandler({
 				this.followUpState('MainMenuState.ServicesCabooseState').ask(speech, reprompt); 
 			},
 			
-			'AMAZON.CancelIntent'() {
+			CancelIntent() {
 				this.tell('Sure, we can talk later!');
 			},
 		},
@@ -438,7 +438,7 @@ app.setHandler({
 			
 			},
 
-			'AMAZON.CancelIntent'() {
+			CancelIntent() {
 				this.tell('Sure, we can talk later!');
 			},
 		},
@@ -493,7 +493,7 @@ app.setHandler({
 			
 			},
 			
-			'AMAZON.CancelIntent'() {
+			CancelIntent() {
 				this.tell('Sure, we can talk later!');
 			},
 			
@@ -531,7 +531,7 @@ app.setHandler({
 			this.followUpState('MainMenuState').ask(speech, reprompt); //to cycle back, as we would want to if they say an unassigned intent
 		},
 	
-		'AMAZON.CancelIntent'() {
+		CancelIntent() {
 			this.tell('Sure, we can talk later!');
 		},
 	

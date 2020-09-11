@@ -6,7 +6,8 @@ module.exports = {
   logging: true,
 
   intentMap: {
-    'AMAZON.StopIntent': 'END',
+    'AMAZON.CancelINtent' : 'CancelIntent',
+    'AMAZON.StopIntent' : 'CancelIntent',
     'AMAZON.FallbackIntent' : 'Unhandled',
     'AMAZON.RepeatIntent' : 'RepeatIntent',
 	
