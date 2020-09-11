@@ -82,7 +82,7 @@ app.setHandler({
 		},
 		
 		'AMAZON.CancelIntent'() {
-			this.tell('See you next time!');
+			this.tell('Sure, we can talk later!');
 		},
 		
 	},
@@ -109,7 +109,7 @@ app.setHandler({
 		}, 
 
 		'AMAZON.CancelIntent'() {
-			this.tell('See you next time!');
+			this.tell('Sure, we can talk later!');
 		},
 	},
 
@@ -197,7 +197,7 @@ app.setHandler({
 		},
 
 		'AMAZON.CancelIntent'() {
-			this.tell('See you next time!');
+			this.tell('Sure, we can talk later!');
 		},
 			
 	}, //end digital assistant state
@@ -271,6 +271,10 @@ app.setHandler({
 				this.followUpState('MainMenuState.ServicesSubMenuState').ask(speech, reprompt); //to cycle back, as we would want to if they say an unassigned intent
 			
 			},
+
+			'AMAZON.CancelIntent'() {
+				this.tell('Sure, we can talk later!');
+			},
 		},
 		
 //State to ask user which service to hear about next, routing through logic so only services you have not heard yet are listed, until all are heard and it resets. 
@@ -329,6 +333,10 @@ app.setHandler({
 				this.followUpState('MainMenuState.ServicesCabooseState').ask(speech, reprompt); 
 			
 			},
+
+			'AMAZON.CancelIntent'() {
+				this.tell('Sure, we can talk later!');
+			},
 		},
 //connecting state to give user all options in services, as well as some of those in main menu, routing user back through the various parts of the main menu or main submenus	
 		ServicesCabooseState: {
@@ -365,6 +373,9 @@ app.setHandler({
 				this.followUpState('MainMenuState.ServicesCabooseState').ask(speech, reprompt); 
 			},
 			
+			'AMAZON.CancelIntent'() {
+				this.tell('Sure, we can talk later!');
+			},
 		},
 		
 		
@@ -426,6 +437,10 @@ app.setHandler({
 				this.followUpState('MainMenuState.AboutCompanySubMenuState').ask(speech, reprompt); //to cycle back, as we would want to if they say an unassigned intent
 			
 			},
+
+			'AMAZON.CancelIntent'() {
+				this.tell('Sure, we can talk later!');
+			},
 		},
 
 //About Liz Intent with submenu, places user in submenu state, this is within MainMenuState
@@ -478,6 +493,9 @@ app.setHandler({
 			
 			},
 			
+			'AMAZON.CancelIntent'() {
+				this.tell('Sure, we can talk later!');
+			},
 			
 		},
 		
@@ -514,7 +532,7 @@ app.setHandler({
 		},
 	
 		'AMAZON.CancelIntent'() {
-			this.tell('See you next time!');
+			this.tell('Sure, we can talk later!');
 		},
 	
 	}, //End MainMenuState here
