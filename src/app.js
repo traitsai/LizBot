@@ -70,8 +70,11 @@ app.setHandler({
 			this.followUpState('IntroNameState').ask(speech, reprompt);
 		},
 		
-		RepeatIntent() {
-			this.repeat(); //once enabled user context in config.js, we can simply use the repeat method to achieve the goal
+		RepeatIntent() {	//this.repeat was not working, I think because it changes state, we want it to repeat the launch comments
+			let speech = 'Hello there! My name is Elizabeth, but you can call me Liz for short! I work at Traits AI as a digital assistant. How are you today?';
+			let reprompt = 'How is your day?';
+			this.followUpState('IntroState').ask(speech, reprompt);
+			//this.repeat();
 		},
 
 		Unhandled() {																																	
@@ -98,7 +101,10 @@ app.setHandler({
 
 		
 		RepeatIntent() {
-			this.repeat();
+			let speech = 'Before we get started, could I get your first name please?';			
+			let reprompt = 'Could I get your first name please?';
+			
+			this.followUpState('IntroNameState').ask(speech, reprompt);
 		},
 		
 		Unhandled() {																																	
@@ -160,9 +166,14 @@ app.setHandler({
 			
 		}, 
 		
-//Repeat Intent, for when user asks for Liz to repeat the question in Intro		
+//Repeat Intent, for when user asks for Liz to repeat the question in IntroNameState		Issues with using name in the repeat statement here, maybe we need DynamoDB for that?
 		RepeatIntent() {
-			this.repeat();
+			let speech = 'Here at Traits AI we build digital assistants. I\'m curious about what you think about digital assistants, do you enjoy speaking with any other assistants besides Alexa like Siri, Google, or Bixby?';	
+			let reprompt = 'Do you enjoy speaking with any other assistants besides Alexa like Siri, Google, or Bixby?';
+			
+			this.followUpState('DigitalAssistantState').ask(speech, reprompt);
+			
+			//this.repeat();
 		},
 		
 //error catching for DigitalAssistantState		
@@ -197,7 +208,7 @@ app.setHandler({
 		},
 
 		CancelIntent() {
-			this.tell('Sure, we can talk later!');
+			this.tell('Sure, we can talk later! Thanks!');
 		},
 			
 	}, //end digital assistant state
@@ -205,7 +216,7 @@ app.setHandler({
 
 //Main Menu State, the largest, most major state.	
 	MainMenuState: {
-		//end the session when user say no to hear more about any services                   - Should this be a quit intent or something? will the user say No if they want to end session?
+		//end the session when user say no to hear more about any services                  
 		NoIntent() {
 			let speech = 'Sure, we can talk later when you are interested.';
 			this.tell(speech);
@@ -237,7 +248,7 @@ app.setHandler({
 			},
 
 			ChatbotIntent() {
-				let speech = 'A character-driven AI Chatbot customized to your business can automate a lot of the routine busy-work for your company. A Chatbot is a personality that can be the face of your business at anytime, day or night! The only person who works those kind of hours is you, imagine what you could do with two of you!'
+				let speech = 'A character-driven AI Chatbot customized to your business can automate a lot of the routine busy-work for your company. A Chatbot is a personality that can be the face of your business at anytime, day or night! The only person who works those kind of hours is you, imagine what you could do with two of you! '
 							+ 'A Chatbot can guide your clients through your FAQ, making appointments, and help you align the sales needs of your customers with what you can offer at exactly the perfect time! Would you like to hear more about our services?';
 				let reprompt = 'Would you like to hear about one of our other services; AI Avatars or Voice Assistants? Or would you like to hear about our awesome company or about me?';	
 				AboutChatbotsBeenHeard = true;
@@ -274,6 +285,10 @@ app.setHandler({
 
 			CancelIntent() {
 				this.tell('Sure, we can talk later!');
+			},
+			
+			RepeatIntent() {
+				return this.toStateIntent('MainMenuState', 'AIServicesIntent');
 			},
 		},
 		
@@ -337,6 +352,12 @@ app.setHandler({
 			CancelIntent() {
 				this.tell('Sure, we can talk later!');
 			},
+			RepeatIntent() {
+				let speech = 'Would you like to hear about our Company, more services, or about me?'
+				let reprompt = 'Would you like to hear about me or our company?';
+				this.followUpState('MainMenuState.ServicesCabooseState').ask(speech, reprompt); 
+			},
+			
 		},
 //connecting state to give user all options in services, as well as some of those in main menu, routing user back through the various parts of the main menu or main submenus	
 		ServicesCabooseState: {
@@ -344,6 +365,10 @@ app.setHandler({
 			NoIntent() {
 				let speech = 'Sure, we can talk later when you are interested! Thanks for talking with me!';
 				this.tell(speech);
+			},
+			
+			AIServicesIntent() {
+				return this.toStateIntent('MainMenuState', 'AIServicesIntent');
 			},
 								
 			AvatarIntent() {
@@ -375,6 +400,9 @@ app.setHandler({
 			
 			CancelIntent() {
 				this.tell('Sure, we can talk later!');
+			},
+			RepeatIntent() {
+				return this.toStateIntent('ServicesCabooseState', 'Unhandled');		//think this is correct
 			},
 		},
 		
@@ -408,7 +436,7 @@ app.setHandler({
 			}, 
 			//Repeat Intent, for when user asks for Liz to repeat herself in AboutCompanySubMenuState, sends user back to AboutCompanyIntent, to hear about company again, and then ask what to do next
 			RepeatIntent() {
-				return this.repeat();
+				return this.toStateIntent('MainMenuState', 'AboutCompanyIntent');		
 			},
 		//Error-catching
 			Unhandled() {	//error catching specific for about company submenu portion.
@@ -441,6 +469,7 @@ app.setHandler({
 			CancelIntent() {
 				this.tell('Sure, we can talk later!');
 			},
+
 		},
 
 //About Liz Intent with submenu, places user in submenu state, this is within MainMenuState
@@ -496,12 +525,14 @@ app.setHandler({
 			CancelIntent() {
 				this.tell('Sure, we can talk later!');
 			},
-			
+
 		},
 		
 //Repeat Intent, for when user asks for Liz to repeat the question in the Main Menu	
 		RepeatIntent() {
-			this.repeat();
+			//return this.repeat(); or this.repeat() does not appear to work
+			return this.toStateIntent('DigitalAssistantState', 'WhatDigitalAssistantIntent');		//I am not sure about this one, where should it repeat? Because there are multiple pathways to MainMenuState
+																									//This works, but it might not be the best choice for users
 		},
 		
 //error catching for main menu	
