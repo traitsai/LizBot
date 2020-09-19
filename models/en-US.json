@@ -1,5 +1,5 @@
 {
-  "invocation": "Traits AI Liz",
+  "invocation": "traits ai liz",
   "intents": [
     {
       "name": "HelloWorldIntent",
